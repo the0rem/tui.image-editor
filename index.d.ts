@@ -290,5 +290,5 @@ declare namespace tuiImageEditor {
 }
 
 declare module 'tui-image-editor' {
-    export default tuiImageEditor;
+    export = tuiImageEditor;
 }
