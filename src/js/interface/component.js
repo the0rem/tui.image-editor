@@ -32,7 +32,7 @@ class Component {
      */
     fire(...args) {
         const context = this.graphics;
-
+        
         return this.graphics.fire.apply(context, args);
     }
 
