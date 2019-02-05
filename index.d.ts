@@ -1,4 +1,4 @@
-// Type definitions for TOAST UI Image Editor v3.3.1
+// Type definitions for TOAST UI Image Editor v3.4.0
 // TypeScript Version: 3.2.2
 
 /// <reference types="jquery" />
@@ -6,7 +6,7 @@
 declare namespace tuiImageEditor {
     type AngleType = number;
 
-    interface IThemeConfig {
+    export interface IThemeConfig {
         'common.bi.image'?: string;
         'common.bisize.width'?: string;
         'common.bisize.height'?: string;
@@ -60,17 +60,17 @@ declare namespace tuiImageEditor {
         'colorpicker.title.color'?: string;
     }
 
-    interface IIconInfo {
+    export interface IIconInfo {
         [propName: string]: string;
     }
 
-    interface IIconOptions {
+    export interface IIconOptions {
         fill?: string;
         left?: number;
         top?: number;
     }
 
-    interface IShapeOptions {
+    export interface IShapeOptions {
         fill?: string;
         stroke?: string;
         strokeWidth?: number;
@@ -83,7 +83,7 @@ declare namespace tuiImageEditor {
         isRegular?: boolean;
     }
 
-    interface IGenerateTextOptions {
+    export interface IGenerateTextOptions {
         styles?: ITextStyleConfig;
         position?: {
             x: number;
@@ -91,7 +91,7 @@ declare namespace tuiImageEditor {
         };
     }
 
-    interface ITextStyleConfig {
+    export interface ITextStyleConfig {
         fill?: string;
         fontFamily?: string;
         fontSize?: number;
@@ -101,31 +101,31 @@ declare namespace tuiImageEditor {
         textDecoration?: string;
     }
 
-    interface IRectConfig {
+    export interface IRectConfig {
         left: number;
         top: number;
         width: number;
         height: number;
     }
 
-    interface ICanvasSize {
+    export interface ICanvasSize {
         width: number;
         height: number;
     }
 
-    interface IBrushOptions {
+    export interface IBrushOptions {
         width: number;
         color: string;
     }
 
-    interface IPositionConfig {
+    export interface IPositionConfig {
         x: number;
         y: number;
         originX: string;
         originY: string;
     }
 
-    interface IToDataURLOptions {
+    export interface IToDataURLOptions {
         format?: string;
         quality?: number;
         multiplier?: number;
@@ -135,7 +135,7 @@ declare namespace tuiImageEditor {
         height?: number;
     }
 
-    interface IGraphicObjectProps {
+    export interface IGraphicObjectProps {
         id?: number;
         type?: string;
         text?: string;
@@ -153,10 +153,10 @@ declare namespace tuiImageEditor {
         textAlign?: string;
         textDecoration?: string;
         opacity?: number;
-        [propName: string]: number | string | boolean;
+        // [propName: string]: number | string | boolean;
     }
 
-    interface IIncludeUIOptions {
+    export interface IIncludeUIOptions {
         loadImage?: {
             path: string;
             name: string;
@@ -171,7 +171,7 @@ declare namespace tuiImageEditor {
         menuBarPosition?: string;
     }
 
-    interface ISelectionStyleConfig {
+    export interface ISelectionStyleConfig {
         cornerStyle?: string;
         cornerSize?: number;
         cornerColor?: string;
@@ -182,7 +182,7 @@ declare namespace tuiImageEditor {
         rotatingPointOffset?: number;
     }
 
-    interface IObjectProps { // icon, shape
+    export interface IObjectProps { // icon, shape
         fill: string;
         height: number;
         id: number;
@@ -195,7 +195,7 @@ declare namespace tuiImageEditor {
         width: number;
     }
 
-    interface ITextObjectProps extends IObjectProps {
+    export interface ITextObjectProps extends IObjectProps {
         fontFamily: string;
         fontSize: string;
         fontStyle: string;
@@ -204,25 +204,25 @@ declare namespace tuiImageEditor {
         textDecoration: string;
     }
 
-    interface IFilterResolveObject {
+    export interface IFilterResolveObject {
         type: string;
         action: string;
     }
 
-    interface ICropResolveObject {
+    export interface ICropResolveObject {
         oldWidth: number;
         oldHeight: number;
         newWidth: number;
         newHeight: number;
     }
 
-    interface IFlipXYResolveObject {
+    export interface IFlipXYResolveObject {
         flipX: boolean;
         flipY: boolean;
         angle: AngleType;
     }
 
-    interface IOptions {
+    export interface IOptions {
         includeUI?: IIncludeUIOptions;
         cssMaxWidth?: number;
         cssMaxHeight?: number;
@@ -230,7 +230,7 @@ declare namespace tuiImageEditor {
         selectionStyle?: ISelectionStyleConfig;
     }
 
-    class ImageEditor {
+    export class ImageEditor {
         constructor(wrapper: string | JQuery | Element, options: IOptions);
 
         public addIcon(type: string, options?: IIconOptions): Promise<IObjectProps>;
@@ -290,5 +290,5 @@ declare namespace tuiImageEditor {
 }
 
 declare module 'tui-image-editor' {
-    export = tuiImageEditor.ImageEditor;
+    export default tuiImageEditor;
 }
