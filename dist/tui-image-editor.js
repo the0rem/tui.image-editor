@@ -110,7 +110,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	module.exports = _imageEditor2.default;
+	module.exports = {
+	    ImageEditor: _imageEditor2.default
+	};
 
 	// commands
 
