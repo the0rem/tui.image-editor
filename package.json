@@ -75,6 +75,7 @@
     "fabric": "git+https://github.com/fabricjs/fabric.js.git#b979bd5861e4193cfb122d7578d59d62cee0bfdd",
     "core-js": "2.4.1",
     "tui-code-snippet": "^1.5.0",
-    "tui-color-picker": "^2.2.0"
+    "tui-color-picker": "^2.2.0",
+    "canvas-prebuilt": "1.6.x"
   }
 }
