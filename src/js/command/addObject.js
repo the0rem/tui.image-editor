@@ -2,13 +2,10 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Add an object
  */
-import commandFactory from '../factory/command';
-import Promise from 'core-js/library/es6/promise';
-import consts from '../consts';
+import * as commandFactory from '../factory/command';
+import { commandNames, rejectMessages }  from '../consts';
 
-const {commandNames, rejectMessages} = consts;
-
-const command = {
+export const addObject = {
     name: commandNames.ADD_OBJECT,
 
     /**
@@ -17,7 +14,7 @@ const command = {
      * @param {Object} object - Fabric object
      * @returns {Promise}
      */
-    execute(graphics, object) {
+    execute: (graphics, object) => {
         return new Promise((resolve, reject) => {
             if (!graphics.contains(object)) {
                 graphics.add(object);
@@ -32,7 +29,7 @@ const command = {
      * @param {Object} object - Fabric object
      * @returns {Promise}
      */
-    undo(graphics, object) {
+    undo: (graphics, object) => {
         return new Promise((resolve, reject) => {
             if (graphics.contains(object)) {
                 graphics.remove(object);
@@ -44,6 +41,4 @@ const command = {
     }
 };
 
-commandFactory.register(command);
-
-module.exports = command;
+commandFactory.register(addObject);

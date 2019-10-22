@@ -2,18 +2,15 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview FreeDrawingMode class
  */
-import DrawingMode from '../interface/drawingMode';
-import consts from '../consts';
-
-const {drawingModes} = consts;
-const components = consts.componentNames;
+import { DrawingMode } from '../interface/drawingMode';
+import { drawingModes, componentNames } from '../consts';
 
 /**
  * FreeDrawingMode class
  * @class
  * @ignore
  */
-class FreeDrawingMode extends DrawingMode {
+export class FreeDrawingMode extends DrawingMode {
     constructor() {
         super(drawingModes.FREE_DRAWING);
     }
@@ -25,7 +22,7 @@ class FreeDrawingMode extends DrawingMode {
     * @override
     */
     start(graphics, options) {
-        const freeDrawing = graphics.getComponent(components.FREE_DRAWING);
+        const freeDrawing = graphics.getComponent(componentNames.FREE_DRAWING);
         freeDrawing.start(options);
     }
 
@@ -35,9 +32,7 @@ class FreeDrawingMode extends DrawingMode {
      * @override
      */
     end(graphics) {
-        const freeDrawing = graphics.getComponent(components.FREE_DRAWING);
+        const freeDrawing = graphics.getComponent(componentNames.FREE_DRAWING);
         freeDrawing.end();
     }
 }
-
-module.exports = FreeDrawingMode;

@@ -1,7 +1,7 @@
-import util from '../util';
-import Colorpicker from './tools/colorpicker';
-import Range from './tools/range';
-import Submenu from './submenuBase';
+import * as util from '../util';
+import { Colorpicker } from './tools/colorpicker';
+import { Range } from './tools/range';
+import { Submenu } from './submenuBase';
 import templateHtml from './template/submenu/draw';
 import {defaultDrawRangeValus} from '../consts';
 const DRAW_OPACITY = 0.7;
@@ -11,7 +11,7 @@ const DRAW_OPACITY = 0.7;
  * @class
  * @ignore
  */
-class Draw extends Submenu {
+export class Draw extends Submenu {
     constructor(subMenuElement, {locale, iconStyle, menuBarPosition}) {
         super(subMenuElement, {
             locale,
@@ -132,5 +132,3 @@ class Draw extends Submenu {
         }
     }
 }
-
-export default Draw;

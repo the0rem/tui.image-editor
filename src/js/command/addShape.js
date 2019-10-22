@@ -2,14 +2,12 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Add a shape
  */
-import commandFactory from '../factory/command';
-import Promise from 'core-js/library/es6/promise';
-import consts from '../consts';
+import * as commandFactory from '../factory/command';
+import { componentNames, commandNames } from '../consts';
 
-const {componentNames, commandNames} = consts;
 const {SHAPE} = componentNames;
 
-const command = {
+export const addShape = {
     name: commandNames.ADD_SHAPE,
 
     /**
@@ -49,6 +47,4 @@ const command = {
     }
 };
 
-commandFactory.register(command);
-
-module.exports = command;
+commandFactory.register(addShape);

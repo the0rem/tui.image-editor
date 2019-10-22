@@ -3,7 +3,7 @@
  * @class
  * @ignore
  */
-class Submenu {
+export class Submenu {
     /**
      * @param {HTMLElement} subMenuElement - submenu dom element
      * @param {Locale} locale - translate text
@@ -86,5 +86,3 @@ class Submenu {
         subMenuElement.appendChild(iconSubMenu);
     }
 }
-
-export default Submenu;

@@ -1,5 +1,5 @@
-import Submenu from './submenuBase';
-import util from '../util';
+import { Submenu } from './submenuBase';
+import * as util from '../util';
 import templateHtml from './template/submenu/mask';
 
 /**
@@ -7,7 +7,7 @@ import templateHtml from './template/submenu/mask';
  * @class
  * @ignore
  */
-class Mask extends Submenu {
+export class Mask extends Submenu {
     constructor(subMenuElement, {locale, iconStyle, menuBarPosition}) {
         super(subMenuElement, {
             locale,
@@ -65,5 +65,3 @@ class Mask extends Submenu {
         }
     }
 }
-
-export default Mask;

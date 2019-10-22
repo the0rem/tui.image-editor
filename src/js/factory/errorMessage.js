@@ -3,12 +3,8 @@
  * @fileoverview Error-message factory
  */
 import snippet from 'tui-code-snippet';
-import {keyMirror} from '../util';
+import { keyMirror } from '../util';
 
-const types = keyMirror(
-    'UN_IMPLEMENTATION',
-    'NO_COMPONENT_NAME'
-);
 const messages = {
     UN_IMPLEMENTATION: 'Should implement a method: ',
     NO_COMPONENT_NAME: 'Should set a component name'
@@ -22,13 +18,14 @@ const map = {
     }
 };
 
-module.exports = {
-    types: snippet.extend({}, types),
+export const errorTypes = snippet.extend({}, keyMirror(
+    'UN_IMPLEMENTATION',
+    'NO_COMPONENT_NAME'
+));
 
-    create(type, ...args) {
-        type = type.toLowerCase();
-        const func = map[type];
+export function createMessage(type, ...args) {
+    type = type.toLowerCase();
+    const func = map[type];
 
-        return func(...args);
-    }
-};
+    return func(...args);
+}

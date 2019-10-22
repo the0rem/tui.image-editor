@@ -1,5 +1,5 @@
 import snippet from 'tui-code-snippet';
-import Submenu from './submenuBase';
+import { Submenu } from './submenuBase';
 import templateHtml from './template/submenu/crop';
 
 /**
@@ -7,7 +7,7 @@ import templateHtml from './template/submenu/crop';
  * @class
  * @ignore
  */
-class Crop extends Submenu {
+export class Crop extends Submenu {
     constructor(subMenuElement, {locale, iconStyle, menuBarPosition}) {
         super(subMenuElement, {
             locale,
@@ -100,5 +100,3 @@ class Crop extends Submenu {
         }
     }
 }
-
-export default Crop;

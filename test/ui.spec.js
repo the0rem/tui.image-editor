@@ -3,8 +3,7 @@
  * @fileoverview Test cases of "src/js/ui.js"
  */
 import snippet from 'tui-code-snippet';
-import Promise from 'core-js/library/es6/promise';
-import UI from '../src/js/ui';
+import { UI } from '../src/js/ui';
 
 describe('UI', () => {
     let ui;

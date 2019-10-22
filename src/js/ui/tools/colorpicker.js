@@ -24,7 +24,7 @@ const PICKER_COLOR = [
  * @class
  * @ignore
  */
-class Colorpicker {
+export class Colorpicker {
     constructor(colorpickerElement, defaultColor = '#7e7e7e', toggleDirection = 'up') {
         const title = colorpickerElement.getAttribute('title');
 
@@ -169,4 +169,3 @@ class Colorpicker {
 }
 
 snippet.CustomEvents.mixin(Colorpicker);
-export default Colorpicker;

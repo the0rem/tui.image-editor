@@ -4,8 +4,8 @@
  */
 import {fabric} from 'fabric';
 import $ from 'jquery';
-import Graphics from '../src/js/graphics';
-import Line from '../src/js/component/line';
+import { Graphics } from '../src/js/graphics';
+import { Line } from '../src/js/component/line';
 
 describe('Line', () => {
     let canvas, graphics, mockImage, line, fEvent;

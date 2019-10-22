@@ -2,14 +2,12 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Change a text
  */
-import commandFactory from '../factory/command';
-import Promise from 'core-js/library/es6/promise';
-import consts from '../consts';
+import * as commandFactory from '../factory/command';
+import { componentNames, rejectMessages, commandNames } from '../consts';
 
-const {componentNames, rejectMessages, commandNames} = consts;
 const {TEXT} = componentNames;
 
-const command = {
+export const changeText = {
     name: commandNames.CHANGE_TEXT,
 
     /**
@@ -44,6 +42,4 @@ const command = {
     }
 };
 
-commandFactory.register(command);
-
-module.exports = command;
+commandFactory.register(changeText);

@@ -4,8 +4,8 @@
  */
 import {fabric} from 'fabric';
 import $ from 'jquery';
-import Graphics from '../src/js/graphics';
-import Flip from '../src/js/component/flip';
+import { Graphics } from '../src/js/graphics';
+import { Flip } from '../src/js/component/flip';
 
 describe('Flip', () => {
     let graphics, flipModule, mockImage;

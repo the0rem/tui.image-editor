@@ -3,14 +3,12 @@
  * @fileoverview Change text styles
  */
 import snippet from 'tui-code-snippet';
-import commandFactory from '../factory/command';
-import Promise from 'core-js/library/es6/promise';
-import consts from '../consts';
+import * as commandFactory from '../factory/command';
+import { componentNames, rejectMessages, commandNames } from '../consts';
 
-const {componentNames, rejectMessages, commandNames} = consts;
 const {TEXT} = componentNames;
 
-const command = {
+export const changeTextStyle = {
     name: commandNames.CHANGE_TEXT_STYLE,
 
     /**
@@ -55,6 +53,4 @@ const command = {
     }
 };
 
-commandFactory.register(command);
-
-module.exports = command;
+commandFactory.register(changeTextStyle);

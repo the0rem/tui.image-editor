@@ -2,14 +2,12 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Add an icon
  */
-import commandFactory from '../factory/command';
-import Promise from 'core-js/library/es6/promise';
-import consts from '../consts';
+import * as commandFactory from '../factory/command';
+import { componentNames, commandNames } from '../consts';
 
-const {componentNames, commandNames} = consts;
 const {ICON} = componentNames;
 
-const command = {
+export const addIcon = {
     name: commandNames.ADD_ICON,
 
     /**
@@ -22,26 +20,21 @@ const command = {
      *      @param {string} [options.top] - Icon y position
      * @returns {Promise}
      */
-    execute(graphics, type, options) {
+    execute: async (graphics, type, options) => {
         const iconComp = graphics.getComponent(ICON);
 
-        return iconComp.add(type, options).then(objectProps => {
-            this.undoData.object = graphics.getObject(objectProps.id);
+        const objectProps = await  iconComp.add(type, options);
+        this.undoData.object = graphics.getObject(objectProps.id);
 
-            return objectProps;
-        });
+        return objectProps;
     },
     /**
      * @param {Graphics} graphics - Graphics instance
      * @returns {Promise}
      */
-    undo(graphics) {
-        graphics.remove(this.undoData.object);
-
-        return Promise.resolve();
+    undo: async (graphics) => {
+        await graphics.remove(this.undoData.object);
     }
 };
 
-commandFactory.register(command);
-
-module.exports = command;
+commandFactory.register(addIcon);

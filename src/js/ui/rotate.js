@@ -1,5 +1,5 @@
-import Range from './tools/range';
-import Submenu from './submenuBase';
+import { Range } from './tools/range';
+import { Submenu } from './submenuBase';
 import templateHtml from './template/submenu/rotate';
 import {toInteger} from '../util';
 import {defaultRotateRangeValus} from '../consts';
@@ -12,7 +12,7 @@ const COUNTERCLOCKWISE = -30;
  * @class
  * @ignore
  */
-class Rotate extends Submenu {
+export class Rotate extends Submenu {
     constructor(subMenuElement, {locale, iconStyle, menuBarPosition}) {
         super(subMenuElement, {
             locale,
@@ -71,5 +71,3 @@ class Rotate extends Submenu {
         }
     }
 }
-
-export default Rotate;

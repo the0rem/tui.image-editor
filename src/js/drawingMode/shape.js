@@ -2,18 +2,15 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview ShapeDrawingMode class
  */
-import DrawingMode from '../interface/drawingMode';
-import consts from '../consts';
-
-const {drawingModes} = consts;
-const components = consts.componentNames;
+import { DrawingMode } from '../interface/drawingMode';
+import { drawingModes, componentNames } from '../consts';
 
 /**
  * ShapeDrawingMode class
  * @class
  * @ignore
  */
-class ShapeDrawingMode extends DrawingMode {
+export class ShapeDrawingMode extends DrawingMode {
     constructor() {
         super(drawingModes.SHAPE);
     }
@@ -24,7 +21,7 @@ class ShapeDrawingMode extends DrawingMode {
     * @override
     */
     start(graphics) {
-        const shape = graphics.getComponent(components.SHAPE);
+        const shape = graphics.getComponent(componentNames.SHAPE);
         shape.start();
     }
 
@@ -34,9 +31,7 @@ class ShapeDrawingMode extends DrawingMode {
      * @override
      */
     end(graphics) {
-        const shape = graphics.getComponent(components.SHAPE);
+        const shape = graphics.getComponent(componentNames.SHAPE);
         shape.end();
     }
 }
-
-module.exports = ShapeDrawingMode;

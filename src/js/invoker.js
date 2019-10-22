@@ -3,11 +3,9 @@
  * @fileoverview Invoker - invoke commands
  */
 import snippet from 'tui-code-snippet';
-import Promise from 'core-js/library/es6/promise';
-import commandFactory from './factory/command';
-import consts from './consts';
+import * as commandFactory from './factory/command';
+import { eventNames, rejectMessages } from './consts';
 
-const {eventNames, rejectMessages} = consts;
 const {isFunction, isString, CustomEvents} = snippet;
 
 /**
@@ -15,7 +13,7 @@ const {isFunction, isString, CustomEvents} = snippet;
  * @class
  * @ignore
  */
-class Invoker {
+export class Invoker {
     constructor() {
         /**
          * Undo stack
@@ -275,4 +273,3 @@ class Invoker {
 }
 
 CustomEvents.mixin(Invoker);
-module.exports = Invoker;

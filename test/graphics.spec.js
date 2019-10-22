@@ -5,11 +5,8 @@
 import snippet from 'tui-code-snippet';
 import {fabric} from 'fabric';
 import $ from 'jquery';
-import Graphics from '../src/js/graphics';
-import consts from '../src/js/consts';
-
-const {drawingModes} = consts;
-const components = consts.componentNames;
+import { Graphics } from '../src/js/graphics';
+import { drawingModes, componentNames } from '../src/js/consts';
 
 describe('Graphics', () => {
     const cssMaxWidth = 900;
@@ -114,7 +111,7 @@ describe('Graphics', () => {
 
     it('can get the cropped image data', () => {
         graphics.startDrawingMode(drawingModes.CROPPER);
-        spyOn(graphics.getComponent(components.CROPPER)._cropzone, 'isValid').and.returnValue(true);
+        spyOn(graphics.getComponent(componentNames.CROPPER)._cropzone, 'isValid').and.returnValue(true);
 
         expect(graphics.getCropzoneRect()).toBeTruthy();
         expect(graphics.getCroppedImageData(graphics.getCropzoneRect())).toEqual({
@@ -138,7 +135,7 @@ describe('Graphics', () => {
     });
 
     it('can change a drawing shape', () => {
-        const shapeComp = graphics.getComponent(components.SHAPE);
+        const shapeComp = graphics.getComponent(componentNames.SHAPE);
         graphics.setDrawingShape('circle', {
             fill: 'transparent',
             stroke: 'blue',
@@ -164,7 +161,7 @@ describe('Graphics', () => {
     });
 
     it('can register custom icon', () => {
-        const iconComp = graphics.getComponent(components.ICON);
+        const iconComp = graphics.getComponent(componentNames.ICON);
         graphics.registerPaths({
             customIcon: 'M 0 0 L 20 20 L 10 10 Z'
         });

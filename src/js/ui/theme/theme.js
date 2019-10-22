@@ -1,7 +1,7 @@
 import {extend, forEach} from 'tui-code-snippet';
 import {styleLoad} from '../../util';
-import style from '../template/style';
-import standardTheme from './standard';
+import { style } from '../template/style';
+import { standardTheme } from './standard';
 
 /**
  * Theme manager
@@ -9,7 +9,7 @@ import standardTheme from './standard';
  * @param {Object} customTheme - custom theme
  * @ignore
  */
-class Theme {
+export class Theme {
     constructor(customTheme) {
         this.styles = this._changeToObject(extend(standardTheme, customTheme));
         styleLoad(this._styleMaker());
@@ -151,5 +151,3 @@ class Theme {
         return targetString.replace(/([A-Z])/g, ($0, $1) => `-${$1.toLowerCase()}`);
     }
 }
-
-export default Theme;

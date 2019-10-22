@@ -1,6 +1,6 @@
-import Colorpicker from './tools/colorpicker';
-import Range from './tools/range';
-import Submenu from './submenuBase';
+import { Colorpicker } from './tools/colorpicker';
+import { Range } from './tools/range';
+import { Submenu } from './submenuBase';
 import templateHtml from './template/submenu/shape';
 import {toInteger} from '../util';
 import {defaultShapeStrokeValus} from '../consts';
@@ -16,7 +16,7 @@ const SHAPE_DEFAULT_OPTION = {
  * @class
  * @ignore
  */
-class Shape extends Submenu {
+export class Shape extends Submenu {
     constructor(subMenuElement, {locale, iconStyle, menuBarPosition}) {
         super(subMenuElement, {
             locale,
@@ -192,5 +192,3 @@ class Shape extends Submenu {
         });
     }
 }
-
-export default Shape;

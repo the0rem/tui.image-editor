@@ -4,12 +4,8 @@
  */
 import {fabric} from 'fabric';
 import snippet from 'tui-code-snippet';
-import Promise from 'core-js/library/es6/promise';
-import Component from '../interface/component';
-import consts from '../consts';
-
-const events = consts.eventNames;
-const {rejectMessages} = consts;
+import { Component } from '../interface/component';
+import { componentNames, eventNames, rejectMessages } from '../consts';
 
 const pathMap = {
     arrow: 'M 0 90 H 105 V 120 L 160 60 L 105 0 V 30 H 0 Z',
@@ -24,9 +20,9 @@ const pathMap = {
  * @extends {Component}
  * @ignore
  */
-class Icon extends Component {
+export class Icon extends Component {
     constructor(graphics) {
-        super(consts.componentNames.ICON, graphics);
+        super(componentNames.ICON, graphics);
 
         /**
          * Default icon color
@@ -94,12 +90,12 @@ class Icon extends Component {
             'mouse:move': fEvent => {
                 canvas.selection = false;
 
-                this.fire(events.ICON_CREATE_RESIZE, {
+                this.fire(eventNames.ICON_CREATE_RESIZE, {
                     moveOriginPointer: canvas.getPointer(fEvent.e)
                 });
             },
             'mouse:up': fEvent => {
-                this.fire(events.ICON_CREATE_END, {
+                this.fire(eventNames.ICON_CREATE_END, {
                     moveOriginPointer: canvas.getPointer(fEvent.e)
                 });
 
@@ -153,5 +149,3 @@ class Icon extends Component {
         return new fabric.Path(path);
     }
 }
-
-module.exports = Icon;

@@ -1,5 +1,5 @@
 import snippet from 'tui-code-snippet';
-import Submenu from './submenuBase';
+import { Submenu } from './submenuBase';
 import templateHtml from './template/submenu/flip';
 
 /**
@@ -7,7 +7,7 @@ import templateHtml from './template/submenu/flip';
  * @class
  * @ignore
  */
-class Flip extends Submenu {
+export class Flip extends Submenu {
     constructor(subMenuElement, {locale, iconStyle, menuBarPosition}) {
         super(subMenuElement, {
             locale,
@@ -63,5 +63,3 @@ class Flip extends Submenu {
         }
     }
 }
-
-export default Flip;

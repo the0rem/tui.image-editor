@@ -2,11 +2,9 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Image loader
  */
-import Promise from 'core-js/library/es6/promise';
-import Component from '../interface/component';
-import consts from '../consts';
+import { Component } from '../interface/component';
+import { componentNames, rejectMessages } from '../consts';
 
-const {componentNames, rejectMessages} = consts;
 const imageOption = {
     padding: 0,
     crossOrigin: 'Anonymous'
@@ -19,7 +17,7 @@ const imageOption = {
  * @param {Graphics} graphics - Graphics instance
  * @ignore
  */
-class ImageLoader extends Component {
+export class ImageLoader extends Component {
     constructor(graphics) {
         super(componentNames.IMAGE_LOADER, graphics);
     }
@@ -81,5 +79,3 @@ class ImageLoader extends Component {
         });
     }
 }
-
-module.exports = ImageLoader;

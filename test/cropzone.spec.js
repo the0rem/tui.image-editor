@@ -2,7 +2,7 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Test cases of "src/js/extension/cropzone.js"
  */
-import Cropzone from '../src/js/extension/cropzone';
+import { Cropzone } from '../src/js/extension/cropzone';
 
 describe('Cropzone', () => {
     let cropzone;

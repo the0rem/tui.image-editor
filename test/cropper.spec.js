@@ -5,8 +5,8 @@
 import snippet from 'tui-code-snippet';
 import {fabric} from 'fabric';
 import $ from 'jquery';
-import Cropper from '../src/js/component/cropper';
-import Graphics from '../src/js/graphics';
+import { Cropper } from '../src/js/component/cropper';
+import { Graphics } from '../src/js/graphics';
 
 describe('Cropper', () => {
     let cropper, graphics, canvas;

@@ -4,12 +4,9 @@
  */
 import {fabric} from 'fabric';
 import snippet from 'tui-code-snippet';
-import Promise from 'core-js/library/es6/promise';
-import Component from '../interface/component';
-import consts from '../consts';
-import util from '../util';
-
-const events = consts.eventNames;
+import { Component } from '../interface/component';
+import { eventNames } from '../consts';
+import { makeStyleText } from '../util';
 
 const defaultStyles = {
     fill: '#000000',
@@ -26,7 +23,7 @@ const resetStyles = {
 const {browser} = snippet;
 
 const TEXTAREA_CLASSNAME = 'tui-image-eidtor-textarea';
-const TEXTAREA_STYLES = util.makeStyleText({
+const TEXTAREA_STYLES = makeStyleText({
     position: 'absolute',
     padding: 0,
     display: 'none',
@@ -50,7 +47,7 @@ const DBCLICK_TIME = 500;
  * @extends {Component}
  * @ignore
  */
-class Text extends Component {
+export class Text extends Component {
     constructor(graphics) {
         super(consts.componentNames.TEXT, graphics);
 
@@ -478,7 +475,7 @@ class Text extends Component {
                 text: textContent
             };
 
-            this.fire(events.TEXT_CHANGED, params);
+            this.fire(eventNames.TEXT_CHANGED, params);
         }
     }
 
@@ -568,7 +565,7 @@ class Text extends Component {
         const originPointer = this.getCanvas().getPointer(e);
 
         if (!obj) {
-            this.fire(events.ADD_TEXT, {
+            this.fire(eventNames.ADD_TEXT, {
                 originPosition: {
                     x: originPointer.x,
                     y: originPointer.y
@@ -593,7 +590,7 @@ class Text extends Component {
             if (!this.useItext) {
                 this._changeToEditingMode(fEvent.target);
             }
-            this.fire(events.TEXT_EDITING); // fire editing text event
+            this.fire(eventNames.TEXT_EDITING); // fire editing text event
         }
 
         this._lastClickTime = newClickTime;
@@ -651,5 +648,3 @@ class Text extends Component {
         this._textarea.focus();
     }
 }
-
-module.exports = Text;

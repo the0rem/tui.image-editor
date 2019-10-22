@@ -4,8 +4,8 @@
  */
 import {fabric} from 'fabric';
 import $ from 'jquery';
-import Graphics from '../src/js/graphics';
-import Rotation from '../src/js/component/rotation';
+import { Graphics } from '../src/js/graphics';
+import { Rotation } from '../src/js/component/rotation';
 
 describe('Rotation', () => {
     let graphics, rotationModule, mockImage, canvas;

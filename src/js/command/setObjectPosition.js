@@ -2,13 +2,10 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Set object properties
  */
-import commandFactory from '../factory/command';
-import Promise from 'core-js/library/es6/promise';
-import consts from '../consts';
+import * as commandFactory from '../factory/command';
+import { commandNames, rejectMessages } from '../consts';
 
-const {commandNames, rejectMessages} = consts;
-
-const command = {
+export const setObjectPosition = {
     name: commandNames.SET_OBJECT_POSITION,
 
     /**
@@ -51,6 +48,4 @@ const command = {
     }
 };
 
-commandFactory.register(command);
-
-module.exports = command;
+commandFactory.register(setObjectPosition);

@@ -2,10 +2,7 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview DrawingMode interface
  */
-import errorMessage from '../factory/errorMessage';
-
-const createMessage = errorMessage.create;
-const errorTypes = errorMessage.types;
+import { createMessage, errorTypes } from '../factory/errorMessage';
 
 /**
  * DrawingMode interface
@@ -13,7 +10,7 @@ const errorTypes = errorMessage.types;
  * @param {string} name - drawing mode name
  * @ignore
  */
-class DrawingMode {
+export class DrawingMode {
     constructor(name) {
         /**
          * the name of drawing mode
@@ -48,4 +45,3 @@ class DrawingMode {
     }
 }
 
-module.exports = DrawingMode;

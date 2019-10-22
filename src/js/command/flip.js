@@ -2,13 +2,12 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Flip an image
  */
-import commandFactory from '../factory/command';
-import consts from '../consts';
+import * as commandFactory from '../factory/command';
+import { componentNames, commandNames } from '../consts';
 
-const {componentNames, commandNames} = consts;
 const {FLIP} = componentNames;
 
-const command = {
+export const flip = {
     name: commandNames.FLIP_IMAGE,
 
     /**
@@ -35,6 +34,4 @@ const command = {
     }
 };
 
-commandFactory.register(command);
-
-module.exports = command;
+commandFactory.register(flip);

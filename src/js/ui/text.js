@@ -1,6 +1,6 @@
-import Range from './tools/range';
-import Colorpicker from './tools/colorpicker';
-import Submenu from './submenuBase';
+import { Range } from './tools/range';
+import { Colorpicker } from './tools/colorpicker';
+import { Submenu } from './submenuBase';
 import templateHtml from './template/submenu/text';
 import {toInteger} from '../util';
 import {defaultTextRangeValus} from '../consts';
@@ -10,7 +10,7 @@ import {defaultTextRangeValus} from '../consts';
  * @class
  * @ignore
  */
-class Text extends Submenu {
+export class Text extends Submenu {
     constructor(subMenuElement, {locale, iconStyle, menuBarPosition}) {
         super(subMenuElement, {
             locale,
@@ -154,5 +154,3 @@ class Text extends Submenu {
         });
     }
 }
-
-export default Text;

@@ -2,18 +2,15 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview TextDrawingMode class
  */
-import DrawingMode from '../interface/drawingMode';
-import consts from '../consts';
-
-const {drawingModes} = consts;
-const components = consts.componentNames;
+import { DrawingMode } from '../interface/drawingMode';
+import { drawingModes, componentNames } from '../consts';
 
 /**
  * TextDrawingMode class
  * @class
  * @ignore
  */
-class TextDrawingMode extends DrawingMode {
+export class TextDrawingMode extends DrawingMode {
     constructor() {
         super(drawingModes.TEXT);
     }
@@ -24,7 +21,7 @@ class TextDrawingMode extends DrawingMode {
     * @override
     */
     start(graphics) {
-        const text = graphics.getComponent(components.TEXT);
+        const text = graphics.getComponent(componentNames.TEXT);
         text.start();
     }
 
@@ -34,9 +31,7 @@ class TextDrawingMode extends DrawingMode {
      * @override
      */
     end(graphics) {
-        const text = graphics.getComponent(components.TEXT);
+        const text = graphics.getComponent(componentNames.TEXT);
         text.end();
     }
 }
-
-module.exports = TextDrawingMode;

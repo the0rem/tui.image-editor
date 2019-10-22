@@ -3,9 +3,8 @@
  * @fileoverview Test cases of "src/js/action.js"
  */
 import snippet from 'tui-code-snippet';
-import Promise from 'core-js/library/es6/promise';
-import ImageEditor from '../src/js/imageEditor';
-import action from '../src/js/action';
+import { ImageEditor } from '../src/js/imageEditor';
+import { action } from '../src/js/action';
 
 describe('Ui', () => {
     let actions;

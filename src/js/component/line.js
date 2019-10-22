@@ -3,10 +3,8 @@
  * @fileoverview Free drawing module, Set brush
  */
 import {fabric} from 'fabric';
-import Component from '../interface/component';
-import consts from '../consts';
-
-const {eventNames} = consts;
+import { Component } from '../interface/component';
+import { eventNames, componentNames } from '../consts';
 
 /**
  * Line
@@ -15,9 +13,9 @@ const {eventNames} = consts;
  * @extends {Component}
  * @ignore
  */
-class Line extends Component {
+export class Line extends Component {
     constructor(graphics) {
-        super(consts.componentNames.LINE, graphics);
+        super(componentNames.LINE, graphics);
 
         /**
          * Brush width
@@ -167,5 +165,3 @@ class Line extends Component {
         });
     }
 }
-
-module.exports = Line;

@@ -1,6 +1,6 @@
 import './js/polyfill';
-import ImageEditor from './js/imageEditor';
-import './css/index.styl';
+import { ImageEditor } from './js/imageEditor';
+import './scss/index.scss';
 
 // commands
 import './js/command/addIcon';
@@ -23,6 +23,6 @@ import './js/command/rotate';
 import './js/command/setObjectProperties';
 import './js/command/setObjectPosition';
 
-module.exports = {
+export {
     ImageEditor
 };

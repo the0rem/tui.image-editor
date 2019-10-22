@@ -4,17 +4,14 @@
  */
 import snippet from 'tui-code-snippet';
 import Promise from 'core-js/library/es6/promise';
-import Invoker from './invoker';
-import UI from './ui';
-import action from './action';
-import commandFactory from './factory/command';
-import Graphics from './graphics';
-import consts from './consts';
-import {sendHostName} from './util';
+import { Invoker } from './invoker';
+import { UI } from './ui';
+import { action } from './action';
+import * as commandFactory from './factory/command';
+import { Graphics } from './graphics';
+import { eventNames, commandNames, keyCodes, rejectMessages } from './consts';
+import { sendHostName } from './util';
 
-const events = consts.eventNames;
-const commands = consts.commandNames;
-const {keyCodes, rejectMessages} = consts;
 const {isUndefined, forEach, CustomEvents} = snippet;
 
 /**
@@ -71,7 +68,7 @@ const {isUndefined, forEach, CustomEvents} = snippet;
  *   }
  * });
  */
-class ImageEditor {
+export class ImageEditor {
     constructor(wrapper, options) {
         options = snippet.extend({
             includeUI: false,
@@ -240,7 +237,7 @@ class ImageEditor {
         const {
             UNDO_STACK_CHANGED,
             REDO_STACK_CHANGED
-        } = events;
+        } = eventNames;
 
         /**
          * Undo stack changed event
@@ -395,7 +392,7 @@ class ImageEditor {
          *     }
          * });
          */
-        this.fire(events.MOUSE_DOWN, event, originPointer);
+        this.fire(eventNames.MOUSE_DOWN, event, originPointer);
     }
 
     /**
@@ -404,7 +401,7 @@ class ImageEditor {
      * @private
      */
     _pushAddObjectCommand(obj) {
-        const command = commandFactory.create(commands.ADD_OBJECT, this._graphics, obj);
+        const command = commandFactory.create(commandNames.ADD_OBJECT, this._graphics, obj);
         this._invoker.pushUndoStack(command);
     }
 
@@ -425,7 +422,7 @@ class ImageEditor {
          *     console.log(props.id);
          * });
          */
-        this.fire(events.OBJECT_ACTIVATED, props);
+        this.fire(eventNames.OBJECT_ACTIVATED, props);
     }
 
     /**
@@ -444,7 +441,7 @@ class ImageEditor {
          *     console.log(props.type);
          * });
          */
-        this.fire(events.OBJECT_MOVED, props);
+        this.fire(eventNames.OBJECT_MOVED, props);
     }
 
     /**
@@ -463,7 +460,7 @@ class ImageEditor {
          *     console.log(props.type);
          * });
          */
-        this.fire(events.OBJECT_SCALED, props);
+        this.fire(eventNames.OBJECT_SCALED, props);
     }
 
     /**
@@ -493,7 +490,7 @@ class ImageEditor {
      * imageEditor.clearObjects();
      */
     clearObjects() {
-        return this.execute(commands.CLEAR_OBJECTS);
+        return this.execute(commandNames.CLEAR_OBJECTS);
     }
 
     /**
@@ -601,7 +598,7 @@ class ImageEditor {
             return Promise.reject(rejectMessages.invalidParameters);
         }
 
-        return this.execute(commands.LOAD_IMAGE, imageName, url);
+        return this.execute(commandNames.LOAD_IMAGE, imageName, url);
     }
 
     /**
@@ -618,7 +615,7 @@ class ImageEditor {
             return Promise.reject(rejectMessages.invalidParameters);
         }
 
-        return this.execute(commands.ADD_IMAGE_OBJECT, imgUrl);
+        return this.execute(commandNames.ADD_IMAGE_OBJECT, imgUrl);
     }
 
     /**
@@ -691,7 +688,7 @@ class ImageEditor {
      * @private
      */
     _flip(type) {
-        return this.execute(commands.FLIP_IMAGE, type);
+        return this.execute(commandNames.FLIP_IMAGE, type);
     }
 
     /**
@@ -749,7 +746,7 @@ class ImageEditor {
      * @private
      */
     _rotate(type, angle) {
-        return this.execute(commands.ROTATE_IMAGE, type, angle);
+        return this.execute(commandNames.ROTATE_IMAGE, type, angle);
     }
 
     /**
@@ -898,7 +895,7 @@ class ImageEditor {
 
         this._setPositions(options);
 
-        return this.execute(commands.ADD_SHAPE, type, options);
+        return this.execute(commandNames.ADD_SHAPE, type, options);
     }
 
     /**
@@ -934,7 +931,7 @@ class ImageEditor {
      * });
      */
     changeShape(id, options) {
-        return this.execute(commands.CHANGE_SHAPE, id, options);
+        return this.execute(commandNames.CHANGE_SHAPE, id, options);
     }
 
     /**
@@ -972,7 +969,7 @@ class ImageEditor {
         text = text || '';
         options = options || {};
 
-        return this.execute(commands.ADD_TEXT, text, options);
+        return this.execute(commandNames.ADD_TEXT, text, options);
     }
 
     /**
@@ -986,7 +983,7 @@ class ImageEditor {
     changeText(id, text) {
         text = text || '';
 
-        return this.execute(commands.CHANGE_TEXT, id, text);
+        return this.execute(commandNames.CHANGE_TEXT, id, text);
     }
 
     /**
@@ -1007,7 +1004,7 @@ class ImageEditor {
      * });
      */
     changeTextStyle(id, styleObj) {
-        return this.execute(commands.CHANGE_TEXT_STYLE, id, styleObj);
+        return this.execute(commandNames.CHANGE_TEXT_STYLE, id, styleObj);
     }
 
     /**
@@ -1038,7 +1035,7 @@ class ImageEditor {
      * @private
      */
     _onIconCreateResize(originPointer) {
-        this.fire(events.ICON_CREATE_RESIZE, originPointer);
+        this.fire(eventNames.ICON_CREATE_RESIZE, originPointer);
     }
 
     /**
@@ -1049,7 +1046,7 @@ class ImageEditor {
      * @private
      */
     _onIconCreateEnd(originPointer) {
-        this.fire(events.ICON_CREATE_END, originPointer);
+        this.fire(eventNames.ICON_CREATE_END, originPointer);
     }
 
     /**
@@ -1065,7 +1062,7 @@ class ImageEditor {
          *     console.log('text editing');
          * });
          */
-        this.fire(events.TEXT_EDITING);
+        this.fire(eventNames.TEXT_EDITING);
     }
 
     /**
@@ -1093,7 +1090,7 @@ class ImageEditor {
          *     console.log('text position on brwoser: ' + pos.clientPosition);
          * });
          */
-        this.fire(events.ADD_TEXT, {
+        this.fire(eventNames.ADD_TEXT, {
             originPosition: event.originPosition,
             clientPosition: event.clientPosition
         });
@@ -1115,7 +1112,7 @@ class ImageEditor {
      * @private
      */
     _onAddObjectAfter(objectProps) {
-        this.fire(events.ADD_OBJECT_AFTER, objectProps);
+        this.fire(eventNames.ADD_OBJECT_AFTER, objectProps);
     }
 
     /**
@@ -1123,7 +1120,7 @@ class ImageEditor {
      * @private
      */
     _selectionCleared() {
-        this.fire(events.SELECTION_CLEARED);
+        this.fire(eventNames.SELECTION_CLEARED);
     }
 
     /**
@@ -1132,7 +1129,7 @@ class ImageEditor {
      * @private
      */
     _selectionCreated(eventTarget) {
-        this.fire(events.SELECTION_CREATED, eventTarget);
+        this.fire(eventNames.SELECTION_CREATED, eventTarget);
     }
 
     /**
@@ -1181,7 +1178,7 @@ class ImageEditor {
 
         this._setPositions(options);
 
-        return this.execute(commands.ADD_ICON, type, options);
+        return this.execute(commandNames.ADD_ICON, type, options);
     }
 
     /**
@@ -1193,7 +1190,7 @@ class ImageEditor {
      * imageEditor.changeIconColor(id, '#000000');
      */
     changeIconColor(id, color) {
-        return this.execute(commands.CHANGE_ICON_COLOR, id, color);
+        return this.execute(commandNames.CHANGE_ICON_COLOR, id, color);
     }
 
     /**
@@ -1204,7 +1201,7 @@ class ImageEditor {
      * imageEditor.removeObject(id);
      */
     removeObject(id) {
-        return this.execute(commands.REMOVE_OBJECT, id);
+        return this.execute(commandNames.REMOVE_OBJECT, id);
     }
 
     /**
@@ -1229,7 +1226,7 @@ class ImageEditor {
      * });
      */
     removeFilter(type) {
-        return this.execute(commands.REMOVE_FILTER, type);
+        return this.execute(commandNames.REMOVE_FILTER, type);
     }
 
     /**
@@ -1249,7 +1246,7 @@ class ImageEditor {
      * });;
      */
     applyFilter(type, options) {
-        return this.execute(commands.APPLY_FILTER, type, options);
+        return this.execute(commandNames.APPLY_FILTER, type, options);
     }
 
     /**
@@ -1330,7 +1327,7 @@ class ImageEditor {
             return Promise.reject(rejectMessages.invalidParameters);
         }
 
-        return this.execute(commands.RESIZE_CANVAS_DIMENSION, dimension);
+        return this.execute(commandNames.RESIZE_CANVAS_DIMENSION, dimension);
     }
 
     /**
@@ -1379,7 +1376,7 @@ class ImageEditor {
      * });
      */
     setObjectProperties(id, keyValue) {
-        return this.execute(commands.SET_OBJECT_PROPERTIES, id, keyValue);
+        return this.execute(commandNames.SET_OBJECT_PROPERTIES, id, keyValue);
     }
 
     /**
@@ -1501,11 +1498,9 @@ class ImageEditor {
      * });
      */
     setObjectPosition(id, posInfo) {
-        return this.execute(commands.SET_OBJECT_POSITION, id, posInfo);
+        return this.execute(commandNames.SET_OBJECT_POSITION, id, posInfo);
     }
 }
 
 action.mixin(ImageEditor);
 CustomEvents.mixin(ImageEditor);
-
-module.exports = ImageEditor;

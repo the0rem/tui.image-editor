@@ -3,30 +3,25 @@
  * @fileoverview Graphics module
  */
 import snippet from 'tui-code-snippet';
-import Promise from 'core-js/library/es6/promise';
 import {fabric} from 'fabric';
-import ImageLoader from './component/imageLoader';
-import Cropper from './component/cropper';
-import Flip from './component/flip';
-import Rotation from './component/rotation';
-import FreeDrawing from './component/freeDrawing';
-import Line from './component/line';
-import Text from './component/text';
-import Icon from './component/icon';
-import Filter from './component/filter';
-import Shape from './component/shape';
-import CropperDrawingMode from './drawingMode/cropper';
-import FreeDrawingMode from './drawingMode/freeDrawing';
-import LineDrawingMode from './drawingMode/lineDrawing';
-import ShapeDrawingMode from './drawingMode/shape';
-import TextDrawingMode from './drawingMode/text';
-import consts from './consts';
-import util from './util';
+import { ImageLoader } from './component/imageLoader';
+import { Cropper } from './component/cropper';
+import { Flip } from './component/flip';
+import { Rotation } from './component/rotation';
+import { FreeDrawing } from './component/freeDrawing';
+import { Line } from './component/line';
+import { Text } from './component/text';
+import { Icon } from './component/icon';
+import { Filter } from './component/filter';
+import { Shape } from './component/shape';
+import { CropperDrawingMode } from './drawingMode/cropper';
+import { FreeDrawingMode } from './drawingMode/freeDrawing';
+import { LineDrawingMode } from './drawingMode/lineDrawing';
+import { ShapeDrawingMode } from './drawingMode/shape';
+import { TextDrawingMode } from './drawingMode/text';
+import { componentNames, eventNames, drawingModes, fObjectOptions } from './consts';
+import * as util from './util';
 
-const components = consts.componentNames;
-const events = consts.eventNames;
-
-const {drawingModes, fObjectOptions} = consts;
 const {extend, stamp, isArray, isString, forEachArray, forEachOwnProperties, CustomEvents} = snippet;
 
 const DEFAULT_CSS_MAX_WIDTH = 1000;
@@ -50,7 +45,7 @@ const backstoreOnly = {
  *  @param {boolean} option.useDragAddIcon - Use dragable add in icon mode
  * @ignore
  */
-class Graphics {
+export class Graphics {
     constructor(element, {
         cssMaxWidth,
         cssMaxHeight,
@@ -549,7 +544,7 @@ class Graphics {
      * @returns {Object} rect
      */
     getCropzoneRect() {
-        return this.getComponent(components.CROPPER).getCropzoneRect();
+        return this.getComponent(componentNames.CROPPER).getCropzoneRect();
     }
 
     /**
@@ -557,7 +552,7 @@ class Graphics {
      * @param {number} [mode] cropzone rect mode
      */
     setCropzoneRect(mode) {
-        this.getComponent(components.CROPPER).setCropzoneRect(mode);
+        this.getComponent(componentNames.CROPPER).setCropzoneRect(mode);
     }
 
     /**
@@ -570,7 +565,7 @@ class Graphics {
      * @returns {?{imageName: string, url: string}} cropped Image data
      */
     getCroppedImageData(cropRect) {
-        return this.getComponent(components.CROPPER).getCroppedImageData(cropRect);
+        return this.getComponent(componentNames.CROPPER).getCroppedImageData(cropRect);
     }
 
     /**
@@ -581,7 +576,7 @@ class Graphics {
      */
     setBrush(option) {
         const drawingMode = this._drawingMode;
-        let compName = components.FREE_DRAWING;
+        let compName = componentNames.FREE_DRAWING;
 
         if (drawingMode === drawingModes.LINE) {
             compName = drawingModes.LINE;
@@ -604,7 +599,7 @@ class Graphics {
      *      @param {number} [options.isRegular] - Whether resizing shape has 1:1 ratio or not
      */
     setDrawingShape(type, options) {
-        this.getComponent(components.SHAPE).setStates(type, options);
+        this.getComponent(componentNames.SHAPE).setStates(type, options);
     }
 
     /**
@@ -614,7 +609,7 @@ class Graphics {
      *  @param {string} pathInfos.value - value
      */
     registerPaths(pathInfos) {
-        this.getComponent(components.ICON).registerPaths(pathInfos);
+        this.getComponent(componentNames.ICON).registerPaths(pathInfos);
     }
 
     /**
@@ -633,7 +628,7 @@ class Graphics {
      * @returns {boolean} true if it has the filter
      */
     hasFilter(type) {
-        return this.getComponent(components.FILTER).hasFilter(type);
+        return this.getComponent(componentNames.FILTER).hasFilter(type);
     }
 
     /**
@@ -915,7 +910,7 @@ class Graphics {
      */
     _onMouseDown(fEvent) {
         const originPointer = this._canvas.getPointer(fEvent.e);
-        this.fire(events.MOUSE_DOWN, fEvent.e, originPointer);
+        this.fire(eventNames.MOUSE_DOWN, fEvent.e, originPointer);
     }
 
     /**
@@ -952,7 +947,7 @@ class Graphics {
         const {target} = fEvent;
         const params = this.createObjectProperties(target);
 
-        this.fire(events.OBJECT_MOVED, params);
+        this.fire(eventNames.OBJECT_MOVED, params);
     }
 
     /**
@@ -964,7 +959,7 @@ class Graphics {
         const {target} = fEvent;
         const params = this.createObjectProperties(target);
 
-        this.fire(events.OBJECT_SCALED, params);
+        this.fire(eventNames.OBJECT_SCALED, params);
     }
 
     /**
@@ -976,7 +971,7 @@ class Graphics {
         const {target} = fEvent;
         const params = this.createObjectProperties(target);
 
-        this.fire(events.OBJECT_ACTIVATED, params);
+        this.fire(eventNames.OBJECT_ACTIVATED, params);
     }
 
     /**
@@ -989,7 +984,7 @@ class Graphics {
 
         const params = this.createObjectProperties(obj.path);
 
-        this.fire(events.ADD_OBJECT, params);
+        this.fire(eventNames.ADD_OBJECT, params);
     }
 
     /**
@@ -997,7 +992,7 @@ class Graphics {
      * @private
      */
     _onSelectionCleared() {
-        this.fire(events.SELECTION_CLEARED);
+        this.fire(eventNames.SELECTION_CLEARED);
     }
 
     /**
@@ -1006,7 +1001,7 @@ class Graphics {
      * @private
      */
     _onSelectionCreated(fEvent) {
-        this.fire(events.SELECTION_CREATED, fEvent.target);
+        this.fire(eventNames.SELECTION_CREATED, fEvent.target);
     }
 
     /**
@@ -1102,4 +1097,3 @@ class Graphics {
 }
 
 CustomEvents.mixin(Graphics);
-module.exports = Graphics;

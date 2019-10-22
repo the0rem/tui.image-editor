@@ -4,8 +4,8 @@
  */
 import {fabric} from 'fabric';
 import $ from 'jquery';
-import Graphics from '../src/js/graphics';
-import Icon from '../src/js/component/icon';
+import { Graphics } from '../src/js/graphics';
+import { Icon } from '../src/js/component/icon';
 
 describe('Icon', () => {
     let canvas, graphics, mockImage, icon;

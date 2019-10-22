@@ -2,13 +2,12 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Remove a filter from an image
  */
-import commandFactory from '../factory/command';
-import consts from '../consts';
+import * as commandFactory from '../factory/command';
+import { componentNames, commandNames } from '../consts';
 
-const {componentNames, commandNames} = consts;
 const {FILTER} = componentNames;
 
-const command = {
+export const removeFilter = {
     name: commandNames.REMOVE_FILTER,
 
     /**
@@ -37,6 +36,4 @@ const command = {
     }
 };
 
-commandFactory.register(command);
-
-module.exports = command;
+commandFactory.register(removeFilter);

@@ -2,7 +2,7 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Command factory
  */
-import Command from '../interface/command';
+import { Command } from '../interface/command';
 
 const commands = {};
 
@@ -13,7 +13,7 @@ const commands = {};
  * @returns {Command}
  * @ignore
  */
-function create(name, ...args) {
+export function create(name, ...args) {
     const actions = commands[name];
     if (actions) {
         return new Command(actions, args);
@@ -30,11 +30,6 @@ function create(name, ...args) {
  * @param {function} command.undo - undo function
  * @ignore
  */
-function register(command) {
+export function register(command) {
     commands[command.name] = command;
 }
-
-module.exports = {
-    create,
-    register
-};

@@ -4,10 +4,8 @@
  */
 
 import snippet from 'tui-code-snippet';
-import Promise from 'core-js/library/es6/promise';
-import ImageEditor from '../src/js/imageEditor';
-import util from '../src/js/util';
-import consts from '../src/js/consts';
+import { ImageEditor } from '../src/js/imageEditor';
+import * as consts from '../src/js/consts';
 
 describe('ImageEditor', () => {
     // hostnameSent module scope variable can not be reset.

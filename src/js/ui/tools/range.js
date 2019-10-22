@@ -6,7 +6,7 @@ import {toInteger} from '../../util';
  * @class
  * @ignore
  */
-class Range {
+export class Range {
     constructor(rangeElement, options = {}) {
         this._value = options.value || 0;
         this.rangeElement = rangeElement;
@@ -168,4 +168,3 @@ class Range {
 }
 
 snippet.CustomEvents.mixin(Range);
-export default Range;

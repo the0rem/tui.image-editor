@@ -10,7 +10,7 @@ import {fabric} from 'fabric';
  * @extends {fabric.Image.filters.Mask}
  * @ignore
  */
-const Mask = fabric.util.createClass(fabric.Image.filters.Mask, /** @lends Mask.prototype */{
+export const Mask = fabric.util.createClass(fabric.Image.filters.Mask, /** @lends Mask.prototype */{
     /**
      * Apply filter to canvas element
      * @param {Object} canvasEl - Canvas element to apply filter
@@ -90,4 +90,3 @@ const Mask = fabric.util.createClass(fabric.Image.filters.Mask, /** @lends Mask.
     }
 });
 
-module.exports = Mask;

@@ -2,10 +2,7 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Command interface
  */
-import errorMessage from '../factory/errorMessage';
-
-const createMessage = errorMessage.create;
-const errorTypes = errorMessage.types;
+import { createMessage, errorTypes } from '../factory/errorMessage';
 
 /**
  * Command class
@@ -15,7 +12,7 @@ const errorTypes = errorMessage.types;
  * @param {Array} args - passing arguments on execute, undo
  * @ignore
  */
-class Command {
+export class Command {
     constructor(actions, args) {
         /**
          * command name
@@ -100,5 +97,3 @@ class Command {
         return this;
     }
 }
-
-module.exports = Command;

@@ -2,13 +2,10 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Add an image object
  */
-import commandFactory from '../factory/command';
-import Promise from 'core-js/library/es6/promise';
-import consts from '../consts';
+import * as commandFactory from '../factory/command';
+import { commandNames } from '../consts';
 
-const {commandNames} = consts;
-
-const command = {
+export const addImageObject = {
     name: commandNames.ADD_IMAGE_OBJECT,
 
     /**
@@ -17,24 +14,20 @@ const command = {
      * @param {string} imgUrl - Image url to make object
      * @returns {Promise}
      */
-    execute(graphics, imgUrl) {
-        return graphics.addImageObject(imgUrl).then(objectProps => {
-            this.undoData.object = graphics.getObject(objectProps.id);
+    execute: async (graphics, imgUrl) => {
+        const objectProps = await graphics.addImageObject(imgUrl);
+        this.undoData.object = graphics.getObject(objectProps.id);
 
-            return objectProps;
-        });
+        return objectProps;
     },
     /**
      * @param {Graphics} graphics - Graphics instance
      * @returns {Promise}
      */
-    undo(graphics) {
-        graphics.remove(this.undoData.object);
-
-        return Promise.resolve();
+    undo: async (graphics) => {
+        await graphics.remove(this.undoData.object);
     }
 };
 
-commandFactory.register(command);
+commandFactory.register(addImageObject);
 
-module.exports = command;

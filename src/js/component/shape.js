@@ -3,14 +3,10 @@
  * @fileoverview Shape component
  */
 import {fabric} from 'fabric';
-import Promise from 'core-js/library/es6/promise';
-import Component from '../interface/component';
-import consts from '../consts';
-import resizeHelper from '../helper/shapeResizeHelper';
+import { Component } from '../interface/component';
+import { rejectMessages, eventNames, keyCodes } from '../consts';
+import * as resizeHelper from '../helper/shapeResizeHelper';
 import {extend, inArray} from 'tui-code-snippet';
-
-const {rejectMessages, eventNames} = consts;
-const KEY_CODES = consts.keyCodes;
 
 const DEFAULT_TYPE = 'rect';
 const DEFAULT_OPTIONS = {
@@ -37,7 +33,7 @@ const shapeType = ['rect', 'circle', 'triangle'];
  * @extends {Component}
  * @ignore
  */
-class Shape extends Component {
+export class Shape extends Component {
     constructor(graphics) {
         super(consts.componentNames.SHAPE, graphics);
 
@@ -384,7 +380,7 @@ class Shape extends Component {
      * @private
      */
     _onKeyDown(e) {
-        if (e.keyCode === KEY_CODES.SHIFT) {
+        if (e.keyCode === keyCodes.SHIFT) {
             this._withShiftKey = true;
 
             if (this._shapeObj) {
@@ -399,7 +395,7 @@ class Shape extends Component {
      * @private
      */
     _onKeyUp(e) {
-        if (e.keyCode === KEY_CODES.SHIFT) {
+        if (e.keyCode === keyCodes.SHIFT) {
             this._withShiftKey = false;
 
             if (this._shapeObj) {
@@ -408,5 +404,3 @@ class Shape extends Component {
         }
     }
 }
-
-module.exports = Shape;

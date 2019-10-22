@@ -1,8 +1,8 @@
 import {extend} from 'tui-code-snippet';
-import util from './util';
-import Imagetracer from './helper/imagetracer';
+import * as util from './util';
+import { ImageTracer } from './helper/imagetracer';
 
-export default {
+export const action = {
 
     /**
      * Get ui actions
@@ -184,8 +184,8 @@ export default {
                 this.registerIcons(iconObj);
             },
             registCustomIcon: (imgUrl, file) => {
-                const imagetracer = new Imagetracer();
-                imagetracer.imageToSVG(
+                const imageTracer = new ImageTracer();
+                imageTracer.imageToSVG(
                     imgUrl,
                     svgstr => {
                         const [, svgPath] = svgstr.match(/path[^>]*d="([^"]*)"/);

@@ -27,7 +27,7 @@
   OTHER DEALINGS IN THE SOFTWARE.
   For more information, please refer to http://unlicense.org/
 */
-export default class ImageTracer {
+export class ImageTracer {
     static tracerDefaultOption() {
         return {
             pathomit: 100,

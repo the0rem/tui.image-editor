@@ -4,8 +4,8 @@
  */
 import snippet from 'tui-code-snippet';
 import {fabric} from 'fabric';
-import Component from '../interface/component';
-import Cropzone from '../extension/cropzone';
+import { Component } from '../interface/component';
+import { Cropzone } from '../extension/cropzone';
 import {keyCodes, componentNames} from '../consts';
 import {clamp} from '../util';
 
@@ -24,7 +24,7 @@ const DEFAULT_OPTION = {
  * @class Cropper
  * @ignore
  */
-class Cropper extends Component {
+export class Cropper extends Component {
     constructor(graphics) {
         super(componentNames.CROPPER, graphics);
 
@@ -359,5 +359,3 @@ class Cropper extends Component {
         }
     }
 }
-
-module.exports = Cropper;

@@ -1,6 +1,6 @@
 import snippet from 'tui-code-snippet';
-import Colorpicker from './tools/colorpicker';
-import Submenu from './submenuBase';
+import { Colorpicker } from './tools/colorpicker';
+import { Submenu } from './submenuBase';
 import templateHtml from './template/submenu/icon';
 import {isSupportFileApi} from '../util';
 import {defaultIconPath} from '../consts';
@@ -10,7 +10,7 @@ import {defaultIconPath} from '../consts';
  * @class
  * @ignore
  */
-class Icon extends Submenu {
+export class Icon extends Submenu {
     constructor(subMenuElement, {locale, iconStyle, menuBarPosition}) {
         super(subMenuElement, {
             locale,
@@ -133,5 +133,3 @@ class Icon extends Submenu {
         }
     }
 }
-
-export default Icon;

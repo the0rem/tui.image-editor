@@ -1,7 +1,7 @@
 import snippet from 'tui-code-snippet';
-import Colorpicker from './tools/colorpicker';
-import Range from './tools/range';
-import Submenu from './submenuBase';
+import { Colorpicker } from './tools/colorpicker';
+import { Range } from './tools/range';
+import { Submenu } from './submenuBase';
 import templateHtml from './template/submenu/filter';
 import {toInteger, toCamelCase} from '../util';
 import {defaultFilterRangeValus as FILTER_RANGE} from '../consts';
@@ -32,7 +32,7 @@ const FILTER_OPTIONS = [
  * @class
  * @ignore
  */
-class Filter extends Submenu {
+export class Filter extends Submenu {
     constructor(subMenuElement, {locale, iconStyle, menuBarPosition}) {
         super(subMenuElement, {
             locale,
@@ -305,5 +305,3 @@ class Filter extends Submenu {
         });
     }
 }
-
-export default Filter;

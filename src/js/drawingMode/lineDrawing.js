@@ -2,18 +2,15 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview LineDrawingMode class
  */
-import DrawingMode from '../interface/drawingMode';
-import consts from '../consts';
-
-const {drawingModes} = consts;
-const components = consts.componentNames;
+import { DrawingMode } from '../interface/drawingMode';
+import { drawingModes, componentNames } from '../consts';
 
 /**
  * LineDrawingMode class
  * @class
  * @ignore
  */
-class LineDrawingMode extends DrawingMode {
+export class LineDrawingMode extends DrawingMode {
     constructor() {
         super(drawingModes.LINE_DRAWING);
     }
@@ -25,7 +22,7 @@ class LineDrawingMode extends DrawingMode {
     * @override
     */
     start(graphics, options) {
-        const lineDrawing = graphics.getComponent(components.LINE);
+        const lineDrawing = graphics.getComponent(componentNames.LINE);
         lineDrawing.start(options);
     }
 
@@ -35,9 +32,7 @@ class LineDrawingMode extends DrawingMode {
      * @override
      */
     end(graphics) {
-        const lineDrawing = graphics.getComponent(components.LINE);
+        const lineDrawing = graphics.getComponent(componentNames.LINE);
         lineDrawing.end();
     }
 }
-
-module.exports = LineDrawingMode;

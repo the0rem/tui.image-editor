@@ -177,67 +177,65 @@ function adjustDimensionOnMouseMove(pointer, shape) {
     shape.set(options);
 }
 
-module.exports = {
-    /**
-     * Set each origin value to shape
-     * @param {fabric.Object} shape - Shape object
-     */
-    setOrigins(shape) {
-        const leftTopPoint = shape.getPointByOrigin('left', 'top');
-        const rightTopPoint = shape.getPointByOrigin('right', 'top');
-        const rightBottomPoint = shape.getPointByOrigin('right', 'bottom');
-        const leftBottomPoint = shape.getPointByOrigin('left', 'bottom');
+/**
+ * Set each origin value to shape
+ * @param {fabric.Object} shape - Shape object
+ */
+export function setOrigins(shape) {
+    const leftTopPoint = shape.getPointByOrigin('left', 'top');
+    const rightTopPoint = shape.getPointByOrigin('right', 'top');
+    const rightBottomPoint = shape.getPointByOrigin('right', 'bottom');
+    const leftBottomPoint = shape.getPointByOrigin('left', 'bottom');
 
-        shape.origins = {
-            lt: leftTopPoint,
-            rt: rightTopPoint,
-            rb: rightBottomPoint,
-            lb: leftBottomPoint
-        };
-    },
+    shape.origins = {
+        lt: leftTopPoint,
+        rt: rightTopPoint,
+        rb: rightBottomPoint,
+        lb: leftBottomPoint
+    };
+}
 
-    /**
-     * Resize the shape
-     * @param {fabric.Object} shape - Shape object
-     * @param {{x: number, y: number}} pointer - Mouse pointer values on canvas
-     * @param {boolean} isScaling - Whether the resizing action is scaling or not
-     */
-    resize(shape, pointer, isScaling) {
-        if (hasCenterOrigin(shape)) {
-            adjustOriginByStartPoint(pointer, shape);
-            setStartPoint(shape);
-        }
-
-        if (isScaling) {
-            adjustDimensionOnScaling(shape, pointer);
-        } else {
-            adjustDimensionOnMouseMove(pointer, shape);
-        }
-
-        adjustOriginByMovingPointer(pointer, shape);
-    },
-
-    /**
-     * Adjust the origin position of shape to center
-     * @param {fabric.Object} shape - Shape object
-     */
-    adjustOriginToCenter(shape) {
-        const centerPoint = shape.getPointByOrigin('center', 'center');
-        const originX = shape.getOriginX();
-        const originY = shape.getOriginY();
-        const origin = shape.getPointByOrigin(originX, originY);
-        const left = shape.getLeft() + (centerPoint.x - origin.x);
-        const top = shape.getTop() + (centerPoint.y - origin.y);
-
-        shape.set({
-            hasControls: true,
-            hasBorders: true,
-            originX: 'center',
-            originY: 'center',
-            left,
-            top
-        });
-
-        shape.setCoords(); // For left, top properties
+/**
+ * Resize the shape
+ * @param {fabric.Object} shape - Shape object
+ * @param {{x: number, y: number}} pointer - Mouse pointer values on canvas
+ * @param {boolean} isScaling - Whether the resizing action is scaling or not
+ */
+export function resize(shape, pointer, isScaling) {
+    if (hasCenterOrigin(shape)) {
+        adjustOriginByStartPoint(pointer, shape);
+        setStartPoint(shape);
     }
-};
+
+    if (isScaling) {
+        adjustDimensionOnScaling(shape, pointer);
+    } else {
+        adjustDimensionOnMouseMove(pointer, shape);
+    }
+
+    adjustOriginByMovingPointer(pointer, shape);
+}
+
+/**
+ * Adjust the origin position of shape to center
+ * @param {fabric.Object} shape - Shape object
+ */
+export function adjustOriginToCenter(shape) {
+    const centerPoint = shape.getPointByOrigin('center', 'center');
+    const originX = shape.getOriginX();
+    const originY = shape.getOriginY();
+    const origin = shape.getPointByOrigin(originX, originY);
+    const left = shape.getLeft() + (centerPoint.x - origin.x);
+    const top = shape.getTop() + (centerPoint.y - origin.y);
+
+    shape.set({
+        hasControls: true,
+        hasBorders: true,
+        originX: 'center',
+        originY: 'center',
+        left,
+        top
+    });
+
+    shape.setCoords(); // For left, top properties
+}

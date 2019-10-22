@@ -1,19 +1,19 @@
 import snippet from 'tui-code-snippet';
-import util from './util';
+import * as util from './util';
 import mainContainer from './ui/template/mainContainer';
 import controls from './ui/template/controls';
 
-import Theme from './ui/theme/theme';
-import Shape from './ui/shape';
-import Crop from './ui/crop';
-import Flip from './ui/flip';
-import Rotate from './ui/rotate';
-import Text from './ui/text';
-import Mask from './ui/mask';
-import Icon from './ui/icon';
-import Draw from './ui/draw';
-import Filter from './ui/filter';
-import Locale from './ui/locale/locale';
+import { Theme } from './ui/theme/theme';
+import { Shape } from './ui/shape';
+import { Crop } from './ui/crop';
+import { Flip } from './ui/flip';
+import { Rotate } from './ui/rotate';
+import { Text } from './ui/text';
+import { Mask } from './ui/mask';
+import { Icon } from './ui/icon';
+import { Draw } from './ui/draw';
+import { Filter } from './ui/filter';
+import { Locale } from './ui/locale/locale';
 
 const SUB_UI_COMPONENT = {
     Shape,
@@ -43,7 +43,7 @@ const BI_EXPRESSION_MINSIZE_WHEN_TOP_POSITION = '1300';
  *     @param {string} options.uiSize.height - height of ui
  * @param {Objecdt} actions - ui action instance
  */
-class Ui {
+export class UI {
     constructor(element, options, actions) {
         this.options = this._initializeOption(options);
         this._actions = actions;
@@ -596,5 +596,3 @@ class Ui {
         editorElementStyle.left = `${left}px`;
     }
 }
-
-export default Ui;

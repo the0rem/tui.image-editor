@@ -2,8 +2,8 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Test cases of "src/js/component/cropper.js"
  */
-import Theme from '../src/js/ui/theme/theme';
-import defaultTheme from '../src/js/ui/theme/standard';
+import { Theme } from '../src/js/ui/theme/theme';
+import { defaultTheme } from '../src/js/ui/theme/standard';
 
 describe('Theme', () => {
     let theme;

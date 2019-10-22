@@ -3,7 +3,7 @@
  * @fileoverview Test cases of "src/js/component/filter.js"
  */
 import $ from 'jquery';
-import ImageEditor from '../src/js/imageEditor';
+import { ImageEditor } from '../src/js/imageEditor';
 
 describe('Promise API', () => {
     let imageEditor, canvas, activeObjectId;

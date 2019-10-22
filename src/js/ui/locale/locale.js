@@ -1,7 +1,7 @@
 /**
  * Translate messages
  */
-class Locale {
+export class Locale {
     constructor(locale) {
         this._locale = locale;
     }
@@ -15,5 +15,3 @@ class Locale {
         return this._locale[message] || message;
     }
 }
-
-export default Locale;

@@ -23,7 +23,7 @@ const CORNER_TYPE_BOTTOM_RIGHT = 'br';
  * @extends {fabric.Rect}
  * @ignore
  */
-const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone.prototype */{
+export const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone.prototype */{
     /**
      * Constructor
      * @param {Object} options Options object
@@ -426,5 +426,3 @@ const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone.protot
         );
     }
 });
-
-module.exports = Cropzone;
