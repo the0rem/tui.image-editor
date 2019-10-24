@@ -13,7 +13,7 @@ export default {
     input: 'src/index.js',
     output: {
         file: 'dist/bundle.js',
-        format: 'iife',
+        format: 'umd',
         name: 'tui',
         sourcemap: true,
     },
