@@ -24,41 +24,41 @@ export default {
         scss({
             output: 'dist/bundle.css',
         }),
-        resolve(),
-        // resolve({
-        //     // module: true,
-        //     jsnext: true,
-        //     main: true,
-        //     // browser: true,
-        // }),
-        // babel({
-        //     babelrc: false,
-        //     exclude: 'node_modules/**',
-        //     presets: [
-        //         [
-        //             "@babel/env",
-        //             {
-        //                 modules: false,
-        //                 useBuiltIns: "usage",
-        //                 corejs: {
-        //                     version: 3,
-        //                     proposals: true,
-        //                 },
-        //             },
-        //         ],
-        //     ],
-        // }),
+        // resolve(),
+        resolve({
+            // module: true,
+            jsnext: true,
+            main: true,
+            // browser: true,
+        }),
+        babel({
+            babelrc: false,
+            exclude: 'node_modules/**',
+            presets: [
+                [
+                    "@babel/env",
+                    {
+                        modules: false,
+                        useBuiltIns: "usage",
+                        corejs: {
+                            version: 3,
+                            proposals: true,
+                        },
+                    },
+                ],
+            ],
+        }),
         commonjs({
             include: /node_modules/,
             exclude: [
                 // 'node_modules/cssstyle/**/*',
             ],
             // browser: true,
-            // preferBuiltins: false,
-            // ignoreGlobal: false,
+            preferBuiltins: false,
+            ignoreGlobal: false,
         }),
-        // globals(),
-        // builtins(),
+        globals(),
+        builtins(),
         json(),
         sourceMaps(),
         serve({
