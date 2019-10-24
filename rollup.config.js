@@ -33,19 +33,19 @@ export default {
         babel({
             babelrc: false,
             exclude: 'node_modules/**',
-            presets: [
-                [
-                    "@babel/env",
-                    {
-                        modules: false,
-                        useBuiltIns: "usage",
-                        corejs: {
-                            version: 3,
-                            proposals: true,
-                        },
-                    },
-                ],
-            ],
+            // presets: [
+            //     [
+            //         "@babel/env",
+            //         {
+            //             modules: false,
+            //             useBuiltIns: "usage",
+            //             corejs: {
+            //                 version: 3,
+            //                 proposals: true,
+            //             },
+            //         },
+            //     ],
+            // ],
         }),
         commonjs({
             include: /node_modules/,
