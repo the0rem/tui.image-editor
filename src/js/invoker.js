@@ -44,7 +44,6 @@ export class Invoker {
      * @private
      */
     _invokeExecution(command) {
-        console.log('command', command);
         this.lock();
 
         let {args} = command;

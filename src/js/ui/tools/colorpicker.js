@@ -82,7 +82,6 @@ export class Colorpicker {
     _addEvent() {
         this.picker.on('change', (value) => {
             const colour = `#${value.toHEXA().join('')}`;
-            console.log({ colour });
             this.picker.applyColor();
             this.picker.hide();
             this.color = colour;

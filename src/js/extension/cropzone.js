@@ -14,7 +14,6 @@ const CORNER_TYPE_MIDDLE_BOTTOM = 'mb';
 const CORNER_TYPE_BOTTOM_LEFT = 'bl';
 const CORNER_TYPE_BOTTOM_RIGHT = 'br';
 
-console.log('fabric', fabric);
 /**
  * Cropzone object
  * Issue: IE7, 8(with excanvas)
