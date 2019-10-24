@@ -2,7 +2,6 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Error-message factory
  */
-import snippet from 'tui-code-snippet';
 import { keyMirror } from '../util';
 
 const messages = {
@@ -18,7 +17,7 @@ const map = {
     }
 };
 
-export const errorTypes = snippet.extend({}, keyMirror(
+export const errorTypes = Object.assign({}, keyMirror(
     'UN_IMPLEMENTATION',
     'NO_COMPONENT_NAME'
 ));

@@ -1,4 +1,3 @@
-import snippet from 'tui-code-snippet';
 import * as util from './util';
 import mainContainer from './ui/template/mainContainer';
 import controls from './ui/template/controls';
@@ -34,14 +33,14 @@ const BI_EXPRESSION_MINSIZE_WHEN_TOP_POSITION = '1300';
  * @class
  * @param {string|jQuery|HTMLElement} element - Wrapper's element or selector
  * @param {Object} [options] - Ui setting options
- *   @param {number} option.loadImage - Init default load image
- *   @param {number} option.initMenu - Init start menu
- *   @param {Boolean} [option.menuBarPosition=bottom] - Let
- *   @param {Boolean} [option.applyCropSelectionStyle=false] - Let
+ *   @param {number} options.loadImage - Init default load image
+ *   @param {number} options.initMenu - Init start menu
+ *   @param {Boolean} [options.menuBarPosition=bottom] - Let
+ *   @param {Boolean} [options.applyCropSelectionStyle=false] - Let
  *   @param {Object} [options.uiSize] - ui size of editor
  *     @param {string} options.uiSize.width - width of ui
  *     @param {string} options.uiSize.height - height of ui
- * @param {Objecdt} actions - ui action instance
+ * @param {Object} actions - ui action instance
  */
 export class UI {
     constructor(element, options, actions) {
@@ -84,7 +83,7 @@ export class UI {
      * @ignore
      */
     setUiDefaultSelectionStyle(option) {
-        return snippet.extend({
+        return Object.assign({
             applyCropSelectionStyle: true,
             applyGroupSelectionStyle: true,
             selectionStyle: {
@@ -103,9 +102,9 @@ export class UI {
      * Change editor size
      * @param {Object} resizeInfo - ui & image size info
      *   @param {Object} resizeInfo.uiSize - image size dimension
-     *     @param {Number} resizeInfo.uiSize.width - ui width
-     *     @param {Number} resizeInfo.uiSize.height - ui height
-     *   @param {Object} resizeInfo.imageSize - image size dimension
+     *     @param {string} resizeInfo.uiSize.width - ui width
+     *     @param {string} resizeInfo.uiSize.height - ui height
+     *   @param {Object} [resizeInfo.imageSize] - image size dimension
      *     @param {Number} resizeInfo.imageSize.oldWidth - old width
      *     @param {Number} resizeInfo.imageSize.oldHeight - old height
      *     @param {Number} resizeInfo.imageSize.newWidth - new width
@@ -219,15 +218,15 @@ export class UI {
     /**
      * Change delete button status
      * @param {Object} [options] - Ui setting options
-     *   @param {object} [option.loadImage] - Init default load image
-     *   @param {string} [option.initMenu] - Init start menu
-     *   @param {string} [option.menuBarPosition=bottom] - Let
-     *   @param {boolean} [option.applyCropSelectionStyle=false] - Let
+     *   @param {object} [options.loadImage] - Init default load image
+     *   @param {string} [options.initMenu] - Init start menu
+     *   @param {string} [options.menuBarPosition=bottom] - Let
+     *   @param {boolean} [options.applyCropSelectionStyle=false] - Let
      * @returns {Object} initialize option
      * @private
      */
     _initializeOption(options) {
-        return snippet.extend({
+        return Object.assign({
             loadImage: {
                 path: '',
                 name: ''
@@ -247,8 +246,8 @@ export class UI {
     /**
      * Set ui container size
      * @param {Object} uiSize - ui dimension
-     *   @param {number} width - width
-     *   @param {number} height - height
+     *   @param {string} uiSize.width - css width property
+     *   @param {string} uiSize.height - css height property
      * @private
      */
     _setUiSize(uiSize = this.options.uiSize) {
@@ -262,7 +261,7 @@ export class UI {
      * @private
      */
     _makeSubMenu() {
-        snippet.forEach(this.options.menu, menuName => {
+        this.options.menu.map((menuName) => {
             const SubComponentClass = SUB_UI_COMPONENT[menuName.replace(/^[a-z]/, $0 => $0.toUpperCase())];
 
             // make menu element
@@ -287,8 +286,6 @@ export class UI {
      */
     _makeUiElement(element) {
         let selectedElement;
-
-        window.snippet = snippet;
 
         if (element.jquery) {
             [selectedElement] = element;
@@ -367,7 +364,7 @@ export class UI {
      * @private
      */
     _addDownloadEvent() {
-        snippet.forEach(this._els.download, element => {
+        this._els.download.forEach((element) => {
             element.addEventListener('click', () => {
                 this._actions.main.download();
             });
@@ -379,7 +376,7 @@ export class UI {
      * @private
      */
     _addLoadEvent() {
-        snippet.forEach(this._els.load, element => {
+        this._els.load.forEach((element) => {
             element.addEventListener('change', event => {
                 this._actions.main.load(event.target.files[0]);
             });
@@ -432,7 +429,7 @@ export class UI {
 
         this._addDownloadEvent();
 
-        snippet.forEach(this.options.menu, menuName => {
+        this.options.menu.map((menuName) => {
             this._addMenuEvent(menuName);
             this._addSubMenuEvent(menuName);
         });

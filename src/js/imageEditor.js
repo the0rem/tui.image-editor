@@ -2,17 +2,15 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Image-editor application class
  */
-import snippet from 'tui-code-snippet';
-import Promise from 'core-js/library/es6/promise';
 import { Invoker } from './invoker';
 import { UI } from './ui';
 import { action } from './action';
 import * as commandFactory from './factory/command';
 import { Graphics } from './graphics';
 import { eventNames, commandNames, keyCodes, rejectMessages } from './consts';
-import { sendHostName } from './util';
-
-const {isUndefined, forEach, CustomEvents} = snippet;
+import isUndefined from 'lodash/isUndefined';
+import forEach from 'lodash/forEach';
+import { CustomEvents } from './custom-events';
 
 /**
  * Image editor
@@ -70,7 +68,7 @@ const {isUndefined, forEach, CustomEvents} = snippet;
  */
 export class ImageEditor {
     constructor(wrapper, options) {
-        options = snippet.extend({
+        options = Object.assign({
             includeUI: false,
             usageStatistics: true
         }, options);
@@ -140,14 +138,11 @@ export class ImageEditor {
             applyGroupSelectionStyle: options.applyGroupSelectionStyle
         });
 
-        if (options.usageStatistics) {
-            sendHostName();
-        }
-
         if (this.ui) {
             this.ui.initCanvas();
             this.setReAction();
         }
+        fabric.enableGLFiltering = false;
     }
 
     /**
@@ -222,7 +217,7 @@ export class ImageEditor {
 
         if (applyGroupSelectionStyle) {
             this.on('selectionCreated', eventTarget => {
-                if (eventTarget.type === 'group') {
+                if (eventTarget.type === 'activeSelection') {
                     eventTarget.set(selectionStyle);
                 }
             });
@@ -308,21 +303,28 @@ export class ImageEditor {
      */
     /* eslint-disable complexity */
     _onKeyDown(e) {
+        const { ctrlKey, keyCode, metaKey } = e;
         const activeObject = this._graphics.getActiveObject();
-        const activeObjectGroup = this._graphics.getActiveGroupObject();
-        const existRemoveObject = activeObject || activeObjectGroup;
+        const activeObjectGroup = this._graphics.getActiveObjects();
+        const existRemoveObject = activeObject || (activeObjectGroup && activeObjectGroup.size());
+        const isModifierKey = (ctrlKey || metaKey);
 
-        if ((e.ctrlKey || e.metaKey) && e.keyCode === keyCodes.Z) {
-            // There is no error message on shortcut when it's empty
-            this.undo()['catch'](() => {});
+        if (isModifierKey) {
+            if (keyCode === keyCodes.Z) {
+                // There is no error message on shortcut when it's empty
+                this.undo()['catch'](() => {
+                });
+            } else if (keyCode === keyCodes.Y) {
+                // There is no error message on shortcut when it's empty
+                this.redo()['catch'](() => {
+                });
+            }
         }
 
-        if ((e.ctrlKey || e.metaKey) && e.keyCode === keyCodes.Y) {
-            // There is no error message on shortcut when it's empty
-            this.redo()['catch'](() => {});
-        }
+        const isDeleteKey = keyCode === keyCodes.BACKSPACE || keyCode === keyCodes.DEL;
+        const isEditing = activeObject && activeObject.isEditing;
 
-        if (((e.keyCode === keyCodes.BACKSPACE || e.keyCode === keyCodes.DEL) && existRemoveObject)) {
+        if (!isEditing && isDeleteKey && existRemoveObject) {
             e.preventDefault();
             this.removeActiveObject();
         }
@@ -334,12 +336,11 @@ export class ImageEditor {
      */
     removeActiveObject() {
         const activeObject = this._graphics.getActiveObject();
-        const activeObjectGroup = this._graphics.getActiveGroupObject();
+        const activeObjectGroup = this._graphics.getActiveObjects();
 
-        if (activeObjectGroup) {
-            const objects = activeObjectGroup.getObjects();
+        if (activeObjectGroup && activeObjectGroup.size()) {
             this.discardSelection();
-            this._removeObjectStream(objects);
+            this._removeObjectStream(activeObjectGroup.getObjects());
         } else if (activeObject) {
             const activeObjectId = this._graphics.getObjectId(activeObject);
             this.removeObject(activeObjectId);
@@ -534,6 +535,20 @@ export class ImageEditor {
         const theArgs = [this._graphics].concat(args);
 
         return this._invoker.execute(commandName, ...theArgs);
+    }
+
+    /**
+     * Invoke command
+     * @param {String} commandName - Command name
+     * @param {...*} args - Arguments for creating command
+     * @returns {Promise}
+     * @private
+     */
+    executeSilent(commandName, ...args) {
+        // Inject an Graphics instance as first parameter
+        const theArgs = [this._graphics].concat(args);
+
+        return this._invoker.executeSilent(commandName, ...theArgs);
     }
 
     /**
@@ -742,11 +757,19 @@ export class ImageEditor {
     /**
      * @param {string} type - 'rotate' or 'setAngle'
      * @param {number} angle - angle value (degree)
+     * @param {boolean} isSilent - is silent execution or not
      * @returns {Promise<RotateStatus, ErrorMsg>}
      * @private
      */
-    _rotate(type, angle) {
-        return this.execute(commandNames.ROTATE_IMAGE, type, angle);
+    _rotate(type, angle, isSilent) {
+        let result = null;
+        if (isSilent) {
+            result = this.executeSilent(commands.ROTATE_IMAGE, type, angle);
+        } else {
+            result = this.execute(commands.ROTATE_IMAGE, type, angle);
+        }
+
+        return result;
     }
 
     /**
@@ -755,9 +778,9 @@ export class ImageEditor {
      * @param {number} angle - Additional angle to rotate image
      * @returns {Promise<RotateStatus, ErrorMsg>}
      * @example
-     * imageEditor.setAngle(10); // angle = 10
+     * imageEditor.rotate(10); // angle = 10
      * imageEditor.rotate(10); // angle = 20
-     * imageEidtor.setAngle(5); // angle = 5
+     * imageEidtor.rotate(5); // angle = 5
      * imageEidtor.rotate(-95); // angle = -90
      * imageEditor.rotate(10).then(status => {
      *     console.log('angle: ', status.angle);
@@ -765,13 +788,14 @@ export class ImageEditor {
      *     console.log('error: ', message);
      * });
      */
-    rotate(angle) {
-        return this._rotate('rotate', angle);
+    rotate(angle, isSilent) {
+        return this._rotate('rotate', angle, isSilent);
     }
 
     /**
      * Set angle
      * @param {number} angle - Angle of image
+     * @param {boolean} isSilent - is silent execution or not
      * @returns {Promise<RotateStatus, ErrorMsg>}
      * @example
      * imageEditor.setAngle(10); // angle = 10
@@ -785,8 +809,8 @@ export class ImageEditor {
      *     console.log('error: ', message);
      * });
      */
-    setAngle(angle) {
-        return this._rotate('setAngle', angle);
+    setAngle(angle, isSilent) {
+        return this._rotate('setAngle', angle, isSilent);
     }
 
     /**
@@ -1504,3 +1528,4 @@ export class ImageEditor {
 
 action.mixin(ImageEditor);
 CustomEvents.mixin(ImageEditor);
+

@@ -2,11 +2,12 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Add filter module
  */
-import {isUndefined, extend, forEach, filter} from 'tui-code-snippet';
-import {fabric} from 'fabric';
+import isUndefined from 'lodash/isUndefined';
+import forEach from 'lodash/forEach';
+import { fabric } from 'fabric';
 import { Component } from '../interface/component';
 import { Mask } from '../extension/mask';
-import { rejectMessages } from '../consts';
+import { rejectMessages, componentNames } from '../consts';
 import { Blur } from '../extension/blur';
 import { Sharpen } from '../extension/sharpen';
 import { Emboss } from '../extension/emboss';
@@ -28,7 +29,7 @@ filters.ColorFilter = ColorFilter;
  */
 export class Filter extends Component {
     constructor(graphics) {
-        super(consts.componentNames.FILTER, graphics);
+        super(componentNames.FILTER, graphics);
     }
 
     /**
@@ -109,7 +110,7 @@ export class Filter extends Component {
             return null;
         }
 
-        return extend({}, imgFilter.options);
+        return Object.assign({}, imgFilter.options);
     }
 
     /**
@@ -138,7 +139,11 @@ export class Filter extends Component {
      * @private
      */
     _apply(sourceImg, callback) {
-        sourceImg.applyFilters(callback);
+        sourceImg.filters.push();
+        const result = sourceImg.applyFilters();
+        if (result) {
+            callback();
+        }
     }
 
     /**
@@ -207,7 +212,7 @@ export class Filter extends Component {
      */
     _removeFilter(sourceImg, type) {
         const fabricType = this._getFabricFilterType(type);
-        sourceImg.filters = filter(sourceImg.filters, value => value.type !== fabricType);
+        sourceImg.filters = sourceImg.filters.filter((value) => value.type !== fabricType);
     }
 
     /**

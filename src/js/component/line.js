@@ -2,9 +2,9 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Free drawing module, Set brush
  */
-import {fabric} from 'fabric';
+import { fabric } from 'fabric';
 import { Component } from '../interface/component';
-import { eventNames, componentNames } from '../consts';
+import { eventNames, componentNames, fObjectOptions } from '../consts';
 
 /**
  * Line
@@ -117,7 +117,7 @@ export class Line extends Component {
             evented: false
         });
 
-        this._line.set(consts.fObjectOptions.SELECTION_STYLE);
+        this._line.set(fObjectOptions.SELECTION_STYLE);
 
         canvas.add(this._line);
 

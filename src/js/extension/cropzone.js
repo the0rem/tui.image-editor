@@ -2,8 +2,7 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Cropzone extending fabric.Rect
  */
-import snippet from 'tui-code-snippet';
-import {fabric} from 'fabric';
+import { fabric } from 'fabric';
 import {clamp} from '../util';
 
 const CORNER_TYPE_TOP_LEFT = 'tl';
@@ -15,6 +14,7 @@ const CORNER_TYPE_MIDDLE_BOTTOM = 'mb';
 const CORNER_TYPE_BOTTOM_LEFT = 'bl';
 const CORNER_TYPE_BOTTOM_RIGHT = 'br';
 
+console.log('fabric', fabric);
 /**
  * Cropzone object
  * Issue: IE7, 8(with excanvas)
@@ -26,35 +26,37 @@ const CORNER_TYPE_BOTTOM_RIGHT = 'br';
 export const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone.prototype */{
     /**
      * Constructor
+     * @param {Object} canvas canvas
      * @param {Object} options Options object
+     * @param {Object} extendsOptions object for extends "options" 
      * @override
      */
-    initialize(options, extendsOptions) {
-        options = snippet.extend(options, extendsOptions);
+    initialize(canvas, options, extendsOptions) {
+        options = Object.assign(options, extendsOptions);
         options.type = 'cropzone';
 
         this.callSuper('initialize', options);
 
+        this.canvas = canvas;
         this.options = options;
 
         this.on({
-            'moving': this._onMoving,
-            'scaling': this._onScaling
+            'moving': this._onMoving.bind(this),
+            'scaling': this._onScaling.bind(this)
         });
     },
 
     /**
      * Render Crop-zone
-     * @param {CanvasRenderingContext2D} ctx - Context
      * @private
      * @override
      */
-    _render(ctx) {
+    _renderCropzone() {
         const cropzoneDashLineWidth = 7;
         const cropzoneDashLineOffset = 7;
-        this.callSuper('_render', ctx);
 
         // Calc original scale
+        const ctx = this.canvas.getContext();
         const originalFlipX = this.flipX ? -1 : 1;
         const originalFlipY = this.flipY ? -1 : 1;
         const originalScaleX = originalFlipX / this.scaleX;
@@ -64,7 +66,7 @@ export const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone
         ctx.scale(originalScaleX, originalScaleY);
 
         // Render outer rect
-        this._fillOuterRect(ctx, 'rgba(0, 0, 0, 0.55)');
+        this._fillOuterRect(ctx, 'rgba(0, 0, 0, 0.5)');
 
         if (this.options.lineWidth) {
             this._fillInnerRect(ctx);
@@ -86,6 +88,19 @@ export const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone
 
         // Reset scale
         ctx.scale(1 / originalScaleX, 1 / originalScaleY);
+    },
+
+    /**
+     * Render Crop-zone
+     * @private
+     * @override
+     */
+    _render() {
+        const ctx = this.canvas.getContext();
+
+        this.callSuper('_render', ctx);
+
+        this._renderCropzone();
     },
 
     /**
@@ -114,7 +129,7 @@ export const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone
      * @private
      */
     _fillOuterRect(ctx, fillStyle) {
-        const {x, y} = this._getCoordinates(ctx);
+        const { x, y } = this._getCoordinates();
 
         ctx.save();
         ctx.fillStyle = fillStyle;
@@ -147,7 +162,7 @@ export const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone
      * @private
      */
     _fillInnerRect(ctx) {
-        const {x: outerX, y: outerY} = this._getCoordinates(ctx);
+        const { x: outerX, y: outerY } = this._getCoordinates();
         const x = this._caculateInnerPosition(outerX, (outerX[2] - outerX[1]) / 3);
         const y = this._caculateInnerPosition(outerY, (outerY[2] - outerY[1]) / 3);
 
@@ -176,7 +191,7 @@ export const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone
     /**
      * Calculate Inner Position
      * @param {Array} outer - outer position
-     * @param {number} size - interval for calcaulate
+     * @param {number} size - interval for calculate
      * @returns {Array} - inner position
      * @private
      */
@@ -196,28 +211,26 @@ export const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone
      * @returns {cropzoneCoordinates} - {@link cropzoneCoordinates}
      * @private
      */
-    _getCoordinates(ctx) {
-        const width = this.getWidth(),
-            height = this.getHeight(),
-            halfWidth = width / 2,
-            halfHeight = height / 2,
-            left = this.getLeft(),
-            top = this.getTop(),
-            canvasEl = ctx.canvas; // canvas element, not fabric object
+    _getCoordinates() {
+        const { canvas, width, height, left, top } = this;
+        const halfWidth = width / 2;
+        const halfHeight = height / 2;
+        const canvasHeight = canvas.getHeight(); // fabric object
+        const canvasWidth = canvas.getWidth(); // fabric object
 
         return {
-            x: snippet.map([
+            x: [
                 -(halfWidth + left), // x0
                 -(halfWidth), // x1
                 halfWidth, // x2
-                halfWidth + (canvasEl.width - left - width) // x3
-            ], Math.ceil),
-            y: snippet.map([
+                halfWidth + (canvasWidth - left - width) // x3
+            ].map(Math.ceil),
+            y: [
                 -(halfHeight + top), // y0
                 -(halfHeight), // y1
                 halfHeight, // y2
-                halfHeight + (canvasEl.height - top - height) // y3
-            ], Math.ceil)
+                halfHeight + (canvasHeight - top - height) // y3
+            ].map(Math.ceil)
         };
     },
 
@@ -230,8 +243,8 @@ export const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone
      * @private
      */
     _strokeBorder(ctx, strokeStyle, {lineDashWidth, lineDashOffset, lineWidth}) {
-        const halfWidth = this.getWidth() / 2,
-            halfHeight = this.getHeight() / 2;
+        const halfWidth = this.width / 2;
+        const halfHeight = this.height / 2;
 
         ctx.save();
         ctx.strokeStyle = strokeStyle;
@@ -262,15 +275,12 @@ export const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone
      * @private
      */
     _onMoving() {
-        const left = this.getLeft(),
-            top = this.getTop(),
-            width = this.getWidth(),
-            height = this.getHeight(),
-            maxLeft = this.canvas.getWidth() - width,
-            maxTop = this.canvas.getHeight() - height;
+        const { height, width, left, top } = this;
+        const maxLeft = this.canvas.getWidth() - width;
+        const maxTop = this.canvas.getHeight() - height;
 
-        this.setLeft(clamp(left, 0, maxLeft));
-        this.setTop(clamp(top, 0, maxTop));
+        this.left = clamp(left, 0, maxLeft);
+        this.top = clamp(top, 0, maxTop);
     },
 
     /**
@@ -279,8 +289,8 @@ export const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone
      * @private
      */
     _onScaling(fEvent) {
-        const pointer = this.canvas.getPointer(fEvent.e),
-            settings = this._calcScalingSizeFromPointer(pointer);
+        const pointer = this.canvas.getPointer(fEvent.e);
+        const settings = this._calcScalingSizeFromPointer(pointer);
 
         // On scaling cropzone,
         // change real width and height and fix scaleFactor to 1
@@ -314,10 +324,11 @@ export const Cropzone = fabric.util.createClass(fabric.Rect, /** @lends Cropzone
      * @private
      */
     _calcTopLeftScalingSizeFromPointer(x, y) {
-        const bottom = this.getHeight() + this.top,
-            right = this.getWidth() + this.left,
-            top = clamp(y, 0, bottom - 1), // 0 <= top <= (bottom - 1)
-            left = clamp(x, 0, right - 1); // 0 <= left <= (right - 1)
+        const rect = this.getBoundingRect(false, true);
+        const bottom = rect.height + this.top;
+        const right = rect.width + this.left;
+        const top = clamp(y, 0, bottom - 1); // 0 <= top <= (bottom - 1)
+        const left = clamp(x, 0, right - 1); // 0 <= left <= (right - 1)
 
         // When scaling "Top-Left corner": It fixes right and bottom coordinates
         return {

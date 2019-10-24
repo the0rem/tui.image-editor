@@ -2,7 +2,7 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Set object properties
  */
-import snippet from 'tui-code-snippet';
+import forOwn from 'lodash/forOwn';
 import * as commandFactory from '../factory/command';
 import { commandNames, rejectMessages } from '../consts';
 
@@ -31,7 +31,7 @@ export const setObjectProperties = {
         }
 
         this.undoData.props = {};
-        snippet.forEachOwnProperties(props, (value, key) => {
+        forOwn(props, (_value, key) => {
             this.undoData.props[key] = targetObj[key];
         });
 

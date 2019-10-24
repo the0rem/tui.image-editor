@@ -2,7 +2,6 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Test cases of "src/js/ui.js"
  */
-import snippet from 'tui-code-snippet';
 import { UI } from '../src/js/ui';
 
 describe('UI', () => {
@@ -56,7 +55,7 @@ describe('UI', () => {
             );
 
             ui._makeSubMenu();
-            snippet.forEach(uiOptions.menu, menuName => {
+            uiOptions.menu.map((menuName) => {
                 const constructorNameOfInstance = getConstructorName(ui[menuName].constructor);
                 const expected = menuName.replace(/^[a-z]/, $0 => $0.toUpperCase());
                 expect(constructorNameOfInstance).toBe(expected);

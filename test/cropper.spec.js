@@ -2,8 +2,7 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Test cases of "src/js/component/cropper.js"
  */
-import snippet from 'tui-code-snippet';
-import {fabric} from 'fabric';
+import { fabric } from 'fabric';
 import $ from 'jquery';
 import { Cropper } from '../src/js/component/cropper';
 import { Graphics } from '../src/js/graphics';
@@ -41,9 +40,9 @@ describe('Cropper', () => {
 
         it('should set "evented" of all objects to false', () => {
             const objects = [
-                new fabric.Object({evented: true}),
-                new fabric.Object({evented: true}),
-                new fabric.Object({evented: true})
+                new fabric.Rect({evented: true}),
+                new fabric.Rect({evented: true}),
+                new fabric.Rect({evented: true})
             ];
             canvas.add(objects[0], objects[1], objects[2]);
 
@@ -95,12 +94,12 @@ describe('Cropper', () => {
             cropper._startY = 0;
 
             cropper.start();
-            spyOn(cropper._cropzone, 'remove');
+            spyOn(canvas, 'remove');
             spyOn(cropper._cropzone, 'set');
             spyOn(canvas, 'add');
             cropper._onFabricMouseMove({e: {}});
 
-            expect(cropper._cropzone.remove).toHaveBeenCalled();
+            expect(canvas.remove).toHaveBeenCalled();
             expect(cropper._cropzone.set).toHaveBeenCalled();
             expect(canvas.add).toHaveBeenCalled();
         });
@@ -111,12 +110,12 @@ describe('Cropper', () => {
             cropper._startY = 18;
 
             cropper.start();
-            spyOn(cropper._cropzone, 'remove');
+            spyOn(canvas, 'remove');
             spyOn(cropper._cropzone, 'set');
             spyOn(canvas, 'add');
             cropper._onFabricMouseMove({e: {}});
 
-            expect(cropper._cropzone.remove).not.toHaveBeenCalled();
+            expect(canvas.remove).not.toHaveBeenCalled();
             expect(cropper._cropzone.set).not.toHaveBeenCalled();
             expect(canvas.add).not.toHaveBeenCalled();
         });
@@ -126,7 +125,7 @@ describe('Cropper', () => {
         beforeEach(() => {
             cropper._startX = 10;
             cropper._startY = 20;
-            snippet.extend(canvas, {
+            Object.assign(canvas, {
                 getWidth() {
                     return 100;
                 },
@@ -318,9 +317,9 @@ describe('Cropper', () => {
 
         it('should set "evented" of all obejcts to true', () => {
             const objects = [
-                new fabric.Object({evented: false}),
-                new fabric.Object({evented: false}),
-                new fabric.Object({evented: false})
+                new fabric.Rect({evented: false}),
+                new fabric.Rect({evented: false}),
+                new fabric.Rect({evented: false})
             ];
             canvas.add(objects[0], objects[1], objects[2]);
 

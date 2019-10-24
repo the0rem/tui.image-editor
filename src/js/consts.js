@@ -26,25 +26,25 @@ export const componentNames = keyMirror(
  * @type {Object.<string, string>}
  */
 export const commandNames = {
-    'CLEAR_OBJECTS': 'clearObjects',
-    'LOAD_IMAGE': 'loadImage',
-    'FLIP_IMAGE': 'flip',
-    'ROTATE_IMAGE': 'rotate',
-    'ADD_OBJECT': 'addObject',
-    'REMOVE_OBJECT': 'removeObject',
-    'APPLY_FILTER': 'applyFilter',
-    'REMOVE_FILTER': 'removeFilter',
-    'ADD_ICON': 'addIcon',
-    'CHANGE_ICON_COLOR': 'changeIconColor',
-    'ADD_SHAPE': 'addShape',
-    'CHANGE_SHAPE': 'changeShape',
-    'ADD_TEXT': 'addText',
-    'CHANGE_TEXT': 'changeText',
-    'CHANGE_TEXT_STYLE': 'changeTextStyle',
-    'ADD_IMAGE_OBJECT': 'addImageObject',
-    'RESIZE_CANVAS_DIMENSION': 'resizeCanvasDimension',
-    'SET_OBJECT_PROPERTIES': 'setObjectProperties',
-    'SET_OBJECT_POSITION': 'setObjectPosition'
+    CLEAR_OBJECTS: 'clearObjects',
+    LOAD_IMAGE: 'loadImage',
+    FLIP_IMAGE: 'flip',
+    ROTATE_IMAGE: 'rotate',
+    ADD_OBJECT: 'addObject',
+    REMOVE_OBJECT: 'removeObject',
+    APPLY_FILTER: 'applyFilter',
+    REMOVE_FILTER: 'removeFilter',
+    ADD_ICON: 'addIcon',
+    CHANGE_ICON_COLOR: 'changeIconColor',
+    ADD_SHAPE: 'addShape',
+    CHANGE_SHAPE: 'changeShape',
+    ADD_TEXT: 'addText',
+    CHANGE_TEXT: 'changeText',
+    CHANGE_TEXT_STYLE: 'changeTextStyle',
+    ADD_IMAGE_OBJECT: 'addImageObject',
+    RESIZE_CANVAS_DIMENSION: 'resizeCanvasDimension',
+    SET_OBJECT_PROPERTIES: 'setObjectProperties',
+    SET_OBJECT_POSITION: 'setObjectPosition'
 };
 
 /**
@@ -77,7 +77,7 @@ export const eventNames = {
  * Editor states
  * @type {Object.<string, string>}
  */
-export const drawingModes = util.keyMirror(
+export const drawingModes = keyMirror(
     'NORMAL',
     'CROPPER',
     'FREE_DRAWING',
@@ -190,8 +190,8 @@ export const defaultFilterRangeValus = {
     },
     removewhiteDistanceRange: {
         min: 0,
-        max: 255,
-        value: 10
+        max: 1,
+        value: 0.2
     },
     gradientTransparencyRange: {
         min: 0,
@@ -199,9 +199,9 @@ export const defaultFilterRangeValus = {
         value: 100
     },
     brightnessRange: {
-        min: -255,
-        max: 255,
-        value: 100
+        min: -1,
+        max: 1,
+        value: 0
     },
     noiseRange: {
         min: 0,
@@ -215,7 +215,7 @@ export const defaultFilterRangeValus = {
     },
     colorfilterThresholeRange: {
         min: 0,
-        max: 255,
-        value: 45
+        max: 1,
+        value: 0.2
     }
 };

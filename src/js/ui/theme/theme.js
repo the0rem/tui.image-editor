@@ -1,4 +1,4 @@
-import {extend, forEach} from 'tui-code-snippet';
+import forIn from 'lodash/forIn';
 import {styleLoad} from '../../util';
 import { style } from '../template/style';
 import { standardTheme } from './standard';
@@ -11,7 +11,7 @@ import { standardTheme } from './standard';
  */
 export class Theme {
     constructor(customTheme) {
-        this.styles = this._changeToObject(extend(standardTheme, customTheme));
+        this.styles = this._changeToObject(Object.assign(standardTheme, customTheme));
         styleLoad(this._styleMaker());
     }
 
@@ -45,8 +45,8 @@ export class Theme {
                 break;
             case 'submenu.partition':
                 result = {
-                    vertical: this._makeCssText(extend({}, option, {borderLeft: `1px solid ${option.color}`})),
-                    horizontal: this._makeCssText(extend({}, option, {borderBottom: `1px solid ${option.color}`}))
+                    vertical: this._makeCssText(Object.assign({}, option, {borderLeft: `1px solid ${option.color}`})),
+                    horizontal: this._makeCssText(Object.assign({}, option, {borderBottom: `1px solid ${option.color}`}))
                 };
                 break;
 
@@ -108,7 +108,7 @@ export class Theme {
      */
     _changeToObject(styleOptions) {
         const styleObject = {};
-        forEach(styleOptions, (value, key) => {
+        forIn(styleOptions, (value, key) => {
             const keyExplode = key.match(/^(.+)\.([a-z]+)$/i);
             const [, property, subProperty] = keyExplode;
 
@@ -130,7 +130,7 @@ export class Theme {
     _makeCssText(styleObject) {
         const converterStack = [];
 
-        forEach(styleObject, (value, key) => {
+        forIn(styleObject, (value, key) => {
             if (['backgroundImage'].indexOf(key) > -1 && value !== 'none') {
                 value = `url(${value})`;
             }

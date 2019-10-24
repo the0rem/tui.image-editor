@@ -1,4 +1,4 @@
-import snippet from 'tui-code-snippet';
+import forIn from 'lodash/forIn';
 import { Colorpicker } from './tools/colorpicker';
 import { Submenu } from './submenuBase';
 import templateHtml from './template/submenu/icon';
@@ -57,7 +57,7 @@ export class Icon extends Submenu {
      * Register default icon
      */
     registDefaultIcon() {
-        snippet.forEach(defaultIconPath, (path, type) => {
+        forIn(defaultIconPath, (path, type) => {
             this.actions.registDefalutIcons(type, path);
         });
     }

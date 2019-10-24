@@ -1,0 +1,21 @@
+$prefix: 'tui-image-editor';
+
+@import 'main.scss';
+@import 'gridtable.scss';
+@import 'submenu.scss';
+@import 'checkbox.scss';
+@import 'range.scss';
+@import 'position.scss';
+@import 'icon.scss';
+@import 'colorpicker.scss';
+@import 'buttons.scss';
+.tui-image-editor-container.top {
+  &.tui-image-editor-top-optimization {
+    .tui-image-editor-controls ul {
+      text-align: right;
+    }
+    .tui-image-editor-controls-logo {
+      display: none;
+    }
+  }
+}

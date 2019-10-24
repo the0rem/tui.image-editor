@@ -1,5 +1,5 @@
-import snippet from 'tui-code-snippet';
 import {toInteger} from '../../util';
+import { CustomEvents } from '../../custom-events';
 
 /**
  * Range control class
@@ -110,7 +110,7 @@ export class Range {
             this.subbar.style.right = `${(1 - ratio) * this.rangeWidth}px`;
             this._value = value;
 
-            this.fire('change', value);
+            this.fire('change', value, true);
         });
     }
 
@@ -152,7 +152,7 @@ export class Range {
         this._value = value;
 
         if (this.realTimeEvent) {
-            this.fire('change', value);
+            this.fire('change', value, fakse);
         }
     }
 
@@ -161,10 +161,10 @@ export class Range {
      * @private
      */
     _stopChangingAngle() {
-        this.fire('change', this._value);
+        this.fire('change', this._value, true);
         document.removeEventListener('mousemove', this.dragEventHandler.changeAngle);
         document.removeEventListener('mouseup', this.dragEventHandler.stopChangingAngle);
     }
 }
 
-snippet.CustomEvents.mixin(Range);
+CustomEvents.mixin(Range);

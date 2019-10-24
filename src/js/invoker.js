@@ -2,11 +2,11 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Invoker - invoke commands
  */
-import snippet from 'tui-code-snippet';
 import * as commandFactory from './factory/command';
 import { eventNames, rejectMessages } from './consts';
-
-const {isFunction, isString, CustomEvents} = snippet;
+import isFunction from 'lodash/isFunction';
+import isString from 'lodash/isString';
+import { CustomEvents } from './custom-events';
 
 /**
  * Invoker
@@ -44,6 +44,7 @@ export class Invoker {
      * @private
      */
     _invokeExecution(command) {
+        console.log('command', command);
         this.lock();
 
         let {args} = command;
@@ -52,8 +53,10 @@ export class Invoker {
         }
 
         return command.execute(...args)
-            .then(value => {
-                this.pushUndoStack(command);
+            .then((value) => {
+                if (!this._isSilent) {
+                    this.pushUndoStack(command);
+                }
                 this.unlock();
                 if (isFunction(command.executeCallback)) {
                     command.executeCallback(value);
@@ -127,6 +130,13 @@ export class Invoker {
         this._isLocked = false;
     }
 
+    async executeSilent(...args) {
+        this._isSilent = true;
+
+        await this.execute(...args, this._isSilent);
+        this._isSilent = false;
+    }
+
     /**
      * Invoke command
      * Store the command to the undoStack
@@ -135,7 +145,7 @@ export class Invoker {
      * @param {...*} args - Arguments for creating command
      * @returns {Promise}
      */
-    execute(...args) {
+    async execute(...args) {
         if (this._isLocked) {
             return Promise.reject(rejectMessages.isLock);
         }
@@ -145,12 +155,9 @@ export class Invoker {
             command = commandFactory.create(...args);
         }
 
-        return this._invokeExecution(command)
-            .then(value => {
-                this.clearRedoStack();
-
-                return value;
-            });
+        const value = await this._invokeExecution(command);
+        this.clearRedoStack();
+        return value;
     }
 
     /**

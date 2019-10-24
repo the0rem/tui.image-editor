@@ -2,11 +2,11 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Shape component
  */
-import {fabric} from 'fabric';
+import { fabric } from 'fabric';
 import { Component } from '../interface/component';
-import { rejectMessages, eventNames, keyCodes } from '../consts';
+import { rejectMessages, eventNames, keyCodes, componentNames, fObjectOptions } from '../consts';
 import * as resizeHelper from '../helper/shapeResizeHelper';
-import {extend, inArray} from 'tui-code-snippet';
+import { extend } from '../util';
 
 const DEFAULT_TYPE = 'rect';
 const DEFAULT_OPTIONS = {
@@ -35,7 +35,7 @@ const shapeType = ['rect', 'circle', 'triangle'];
  */
 export class Shape extends Component {
     constructor(graphics) {
-        super(consts.componentNames.SHAPE, graphics);
+        super(componentNames.SHAPE, graphics);
 
         /**
          * Object of The drawing shape
@@ -200,7 +200,7 @@ export class Shape extends Component {
      */
     change(shapeObj, options) {
         return new Promise((resolve, reject) => {
-            if (inArray(shapeObj.get('type'), shapeType) < 0) {
+            if (Array.inArray(shapeObj.get('type'), shapeType) < 0) {
                 reject(rejectMessages.unsupportedType);
             }
 
@@ -246,7 +246,7 @@ export class Shape extends Component {
      * @private
      */
     _createOptions(options) {
-        const selectionStyles = consts.fObjectOptions.SELECTION_STYLE;
+        const selectionStyles = fObjectOptions.SELECTION_STYLE;
 
         options = extend({}, DEFAULT_OPTIONS, this._options, selectionStyles, options);
 

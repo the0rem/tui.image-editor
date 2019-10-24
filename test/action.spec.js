@@ -2,7 +2,6 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Test cases of "src/js/action.js"
  */
-import snippet from 'tui-code-snippet';
 import { ImageEditor } from '../src/js/imageEditor';
 import { action } from '../src/js/action';
 
@@ -21,8 +20,6 @@ describe('Ui', () => {
             }
         });
         actions = imageEditorMock.getActions();
-
-        spyOn(snippet, 'imagePing');
     });
 
     afterEach(() => {
@@ -53,7 +50,9 @@ describe('Ui', () => {
 
         it('Undo() API should be executed When the undo action occurs', () => {
             spyOn(imageEditorMock, 'isEmptyUndoStack').and.returnValue(false);
-            spyOn(imageEditorMock, 'undo');
+            spyOn(imageEditorMock, 'undo').and.returnValue(new Promise(resolve => {
+                resolve();
+            }));
 
             mainAction.undo();
 
@@ -62,7 +61,9 @@ describe('Ui', () => {
 
         it('Redo() API should be executed When the redo action occurs', () => {
             spyOn(imageEditorMock, 'isEmptyRedoStack').and.returnValue(false);
-            spyOn(imageEditorMock, 'redo');
+            spyOn(imageEditorMock, 'redo').and.returnValue(new Promise(resolve => {
+                resolve();
+            }));
 
             mainAction.redo();
 
@@ -323,7 +324,7 @@ describe('Ui', () => {
     describe('commonAction', () => {
         it('Each action returned to the getActions method must contain commonAction.', () => {
             const submenus = ['shape', 'crop', 'flip', 'rotate', 'text', 'mask', 'draw', 'icon', 'filter'];
-            snippet.forEach(submenus, submenu => {
+            submenus.map((submenu) => {
                 expect(actions[submenu].modeChange).toBeDefined();
                 expect(actions[submenu].deactivateAll).toBeDefined();
                 expect(actions[submenu].changeSelectableAll).toBeDefined();

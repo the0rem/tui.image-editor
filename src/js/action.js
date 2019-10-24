@@ -1,4 +1,3 @@
-import {extend} from 'tui-code-snippet';
 import * as util from './util';
 import { ImageTracer } from './helper/imagetracer';
 
@@ -37,7 +36,18 @@ export const action = {
             }
         };
 
-        return extend({
+        const setAngleRangeBarOnAction = angle => {
+            if (this.ui.submenu === 'rotate') {
+                this.ui.rotate.setRangeBarAngle('setAngle', angle);
+            }
+        };
+        const onEndUndoRedo = result => {
+            setAngleRangeBarOnAction(result);
+
+            return result;
+        };
+
+        return Object.assign({
             initLoadImage: (imagePath, imageName) => (
                 this.loadImageFromURL(imagePath, imageName).then(sizeValue => {
                     exitCropOnAction();
@@ -49,13 +59,13 @@ export const action = {
             undo: () => {
                 if (!this.isEmptyUndoStack()) {
                     exitCropOnAction();
-                    this.undo();
+                    this.undo().then(onEndUndoRedo);;
                 }
             },
             redo: () => {
                 if (!this.isEmptyRedoStack()) {
                     exitCropOnAction();
-                    this.redo();
+                    this.redo().then(onEndUndoRedo);;
                 }
             },
             reset: () => {
@@ -158,7 +168,7 @@ export const action = {
             });
         };
 
-        return extend({
+        return Object.assign({
             changeColor: color => {
                 if (this.activeObjectId) {
                     this.changeIconColor(this.activeObjectId, color);
@@ -208,7 +218,7 @@ export const action = {
      * @private
      */
     _drawAction() {
-        return extend({
+        return Object.assign({
             setDrawMode: (type, settings) => {
                 this.stopDrawingMode();
                 if (type === 'free') {
@@ -231,7 +241,7 @@ export const action = {
      * @private
      */
     _maskAction() {
-        return extend({
+        return Object.assign({
             loadImageFromURL: (imgUrl, file) => (
                 this.loadImageFromURL(this.toDataURL(), 'FilterImage').then(() => {
                     this.addImageObject(imgUrl).then(() => {
@@ -253,7 +263,7 @@ export const action = {
      * @private
      */
     _textAction() {
-        return extend({
+        return Object.assign({
             changeTextStyle: styleObj => {
                 if (this.activeObjectId) {
                     this.changeTextStyle(this.activeObjectId, styleObj);
@@ -268,14 +278,16 @@ export const action = {
      * @private
      */
     _rotateAction() {
-        return extend({
-            rotate: angle => {
-                this.rotate(angle);
+        return Object.assign({
+            rotate: (angle, isSilent) => {
+                this.rotate(angle, isSilent);
                 this.ui.resizeEditor();
+                this.ui.rotate.setRangeBarAngle('rotate', angle);
             },
-            setAngle: angle => {
-                this.setAngle(angle);
+            setAngle: (angle, isSilent) => {
+                this.setAngle(angle, isSilent);
                 this.ui.resizeEditor();
+                this.ui.rotate.setRangeBarAngle('setAngle', angle);
             }
         }, this._commonAction());
     },
@@ -286,7 +298,7 @@ export const action = {
      * @private
      */
     _shapeAction() {
-        return extend({
+        return Object.assign({
             changeShape: changeShapeObject => {
                 if (this.activeObjectId) {
                     this.changeShape(this.activeObjectId, changeShapeObject);
@@ -304,7 +316,7 @@ export const action = {
      * @private
      */
     _cropAction() {
-        return extend({
+        return Object.assign({
             crop: () => {
                 const cropRect = this.getCropzoneRect();
                 if (cropRect) {
@@ -356,7 +368,7 @@ export const action = {
      * @private
      */
     _flipAction() {
-        return extend({
+        return Object.assign({
             flip: flipType => this[flipType]()
         }, this._commonAction());
     },
@@ -367,7 +379,7 @@ export const action = {
      * @private
      */
     _filterAction() {
-        return extend({
+        return Object.assign({
             applyFilter: (applying, type, options) => {
                 if (applying) {
                     this.applyFilter(type, options);
@@ -519,6 +531,6 @@ export const action = {
      * @param {ImageEditor} ImageEditor instance
      */
     mixin(ImageEditor) {
-        extend(ImageEditor.prototype, this);
+        Object.assign(ImageEditor.prototype, this);
     }
 };

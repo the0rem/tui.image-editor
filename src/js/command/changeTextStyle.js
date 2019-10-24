@@ -2,7 +2,7 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Change text styles
  */
-import snippet from 'tui-code-snippet';
+import forOwn from 'lodash/forOwn';
 import * as commandFactory from '../factory/command';
 import { componentNames, rejectMessages, commandNames } from '../consts';
 
@@ -35,7 +35,7 @@ export const changeTextStyle = {
 
         this.undoData.object = targetObj;
         this.undoData.styles = {};
-        snippet.forEachOwnProperties(styles, (value, key) => {
+        forOwn(styles, (value, key) => {
             this.undoData.styles[key] = targetObj[key];
         });
 

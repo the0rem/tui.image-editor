@@ -39,8 +39,7 @@ describe('Filter', () => {
     });
 
     it('removeFilter() can remove added filter', done => {
-        imageEditor.applyFilter('colorFilter').then(() =>
-            imageEditor.removeFilter('colorFilter')
+        imageEditor.applyFilter('colorFilter').then(() => imageEditor.removeFilter('colorFilter')
         ).then(() => {
             expect(imageEditor.hasFilter('colorFilter')).toBe(false);
             expect(imageEditor.isEmptyUndoStack()).toBe(false);

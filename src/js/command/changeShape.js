@@ -2,8 +2,8 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview change a shape
  */
-import snippet from 'tui-code-snippet';
 import * as commandFactory from '../factory/command';
+import forOwn from 'lodash/forOwn';
 import { componentNames, rejectMessages, commandNames } from '../consts';
 
 const {SHAPE} = componentNames;
@@ -38,7 +38,7 @@ export const changeShape = {
 
         this.undoData.object = targetObj;
         this.undoData.options = {};
-        snippet.forEachOwnProperties(options, (value, key) => {
+        forOwn(options, (_value, key) => {
             this.undoData.options[key] = targetObj[key];
         });
 

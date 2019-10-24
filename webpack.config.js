@@ -57,10 +57,6 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel'
-            },
-            {
-                test: /\.styl$/,
-                loader: ExtractTextPlugin.extract('css-loader?sourceMap!stylus-loader?paths=src/css/')
             }
 
         ]

@@ -2,7 +2,6 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Image flip module
  */
-import snippet from 'tui-code-snippet';
 import { Component } from '../interface/component';
 import { componentNames, rejectMessages } from '../consts';
 
@@ -45,7 +44,7 @@ export class Flip extends Component {
             return Promise.reject(rejectMessages.flip);
         }
 
-        snippet.extend(setting, newSetting);
+        Object.assign(setting, newSetting);
         this.setImageProperties(setting, true);
         this._invertAngle(isChangingFlipX, isChangingFlipY);
         this._flipObjects(isChangingFlipX, isChangingFlipY);
@@ -72,7 +71,7 @@ export class Flip extends Component {
         if (isChangingFlipY) {
             angle *= -1;
         }
-        canvasImage.setAngle(parseFloat(angle)).setCoords();// parseFloat for -0 to 0
+        canvasImage.rotate(parseFloat(angle)).setCoords();// parseFloat for -0 to 0
     }
 
     /**

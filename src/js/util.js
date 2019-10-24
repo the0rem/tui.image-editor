@@ -2,9 +2,31 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Util
  */
-import {forEach, sendHostname} from 'tui-code-snippet';
+import forEach from 'lodash/forEach';
 const {min, max} = Math;
-let hostnameSent = false;
+
+/**
+ * Extend the target object from other objects.
+ * @param {object} target - Object that will be extended
+ * @param {...object} objects - Objects as sources
+ * @returns {object} Extended object
+ * @memberof module:object
+ */
+export function extend(target, objects) { // eslint-disable-line no-unused-vars
+    var hasOwnProp = Object.prototype.hasOwnProperty;
+    var source, prop, i, len;
+
+    for (i = 1, len = arguments.length; i < len; i += 1) {
+        source = arguments[i];
+        for (prop in source) {
+            if (hasOwnProp.call(source, prop)) {
+                target[prop] = source[prop];
+            }
+        }
+    }
+
+    return target;
+}
 
 /**
  * Clamp value
@@ -22,6 +44,38 @@ export function clamp(value, minValue, maxValue) {
     }
 
     return max(minValue, min(value, maxValue));
+}
+
+/**
+ * The last id of stamp
+ * @type {number}
+ * @private
+ */
+var lastId = 0;
+
+/**
+ * Assign a unique id to an object
+ * @param {object} obj - Object that will be assigned id.
+ * @returns {number} Stamped id
+ * @memberof tui.util
+ */
+export function stamp(obj) {
+    if (!obj.__fe_id) {
+        lastId += 1;
+        obj.__fe_id = lastId; // eslint-disable-line camelcase
+    }
+
+    return obj.__fe_id;
+}
+
+/**
+ * Verify whether an object has a stamped id or not.
+ * @param {object} obj - adjusted object
+ * @returns {boolean}
+ * @memberof tui.util
+ */
+export function hasStamp(obj) {
+    return type.isExisty(pick(obj, '__fe_id'));
 }
 
 /**
@@ -117,18 +171,6 @@ export function getRgb(color, alpha) {
     const a = alpha || 1;
 
     return `rgba(${r}, ${g}, ${b}, ${a})`;
-}
-
-/**
- * send hostname
- */
-export function sendHostName() {
-    if (hostnameSent) {
-        return;
-    }
-    hostnameSent = true;
-
-    sendHostname('image-editor', 'UA-129999381-1');
 }
 
 /**

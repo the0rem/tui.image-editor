@@ -46,7 +46,7 @@ CommandFactory.register is executed when import.  The Command class gets the Com
 
  ``` js
 // commandName.js
-import commandFactory from '../factory/command';
+import * as commandFactory from '../factory/command';
 const command = {
     name: 'commandName',
     execute(graphics, ...args) {
@@ -84,17 +84,17 @@ Execute `Command` and manage Undo / Redo.
 - The underlying graphics module uses fabric.js.
 - Below is a list of functions provided by the image editor.
 
-| **Icon** | **Image** | **Shape** | **Text** | **Flip** | **FreeDrawing** | **LineDrawing** | **Rotate** | Crop | **기타** |
-| ---- | ----- | ----- | ---- | ---- | ----------- | ----------- | ------ | ---- | --- |
-| addIcon | addImageObject | addShape | addText | flipX | setBrush | setBrush | rotate | crop | resizeCanvasDimension |
-| registerIcons | loadImageFromFile | setDrawingShape | changeText | flipY |  |  | setAngle | getCropzoneRect | toDataURL |
-| changeIconColor | loadImageFromURL | changeShape | changeTextStyle | resetFlip |  |  |  |  | getDrawingMode |
-|  | ApplyFilter |  |  |  |  |  |  |  | setDrawingMode |
-|  | RemoveFilter |  |  |  |  |  |  |  | getImageName |
-|  | hasFilter |  |  |  |  |  |  |  | clearObjects |
-|  |  |  |  |  |  |  |  |  | removeActiveObject |
-|  |  |  |  |  |  |  |  |  | destroy |
-|  |  |  |  |  |  |  |  |  | setDefaultPathStyle |
+| **Icon**        | **Image**         | **Shape**       | **Text**        | **Flip**  | **FreeDrawing** | **LineDrawing** | **Rotate** | Crop            | **기타**                |
+| --------------- | ----------------- | --------------- | --------------- | --------- | --------------- | --------------- | ---------- | --------------- | --------------------- |
+| addIcon         | addImageObject    | addShape        | addText         | flipX     | setBrush        | setBrush        | rotate     | crop            | resizeCanvasDimension |
+| registerIcons   | loadImageFromFile | setDrawingShape | changeText      | flipY     |                 |                 | setAngle   | getCropzoneRect | toDataURL             |
+| changeIconColor | loadImageFromURL  | changeShape     | changeTextStyle | resetFlip |                 |                 |            |                 | getDrawingMode        |
+|                 | ApplyFilter       |                 |                 |           |                 |                 |            |                 | setDrawingMode        |
+|                 | RemoveFilter      |                 |                 |           |                 |                 |            |                 | getImageName          |
+|                 | hasFilter         |                 |                 |           |                 |                 |            |                 | clearObjects          |
+|                 |                   |                 |                 |           |                 |                 |            |                 | removeActiveObject    |
+|                 |                   |                 |                 |           |                 |                 |            |                 | destroy               |
+|                 |                   |                 |                 |           |                 |                 |            |                 | setDefaultPathStyle   |
 
 
 ## Component
@@ -105,18 +105,18 @@ Execute `Command` and manage Undo / Redo.
 - The event that should be externally transmitted from the Component is passed through the Canvas. The Canvas passes the event back if it is registered outside Canvas.
 - The component list is shown below, and the components that need to change modes such as start / end are displayed.
 
-| Name | Need mode | Usage |
-| --- | ----- | --- |
-| Cropper | O | Crop module, event handling for Crop. |
-| filter | X | Image filter module |
-| flip | X | Image flip Module. |
-| freeDrawing | O | free drawing module |
-| icon | X | Add Icon Module |
-| imageLoader | X | Main image loading module |
-| line | O | Straight line drawing module |
-| rotation | X | Main image and objects rotation module |
-| shape | O | Shape drawing module |
-| text | O | Text object input module. |
+| Name        | Need mode | Usage                                  |
+| ----------- | --------- | -------------------------------------- |
+| Cropper     | O         | Crop module, event handling for Crop.  |
+| filter      | X         | Image filter module                    |
+| flip        | X         | Image flip Module.                     |
+| freeDrawing | O         | free drawing module                    |
+| icon        | X         | Add Icon Module                        |
+| imageLoader | X         | Main image loading module              |
+| line        | O         | Straight line drawing module           |
+| rotation    | X         | Main image and objects rotation module |
+| shape       | O         | Shape drawing module                   |
+| text        | O         | Text object input module.              |
 
 # The drawing mode is mutually exclusive, and Command operation is the user's part.
 - Only one drawing mode should be activated at a time, because the events and UI used for each mode are different. Therefore, the drawing mode is mutually exclusive.
@@ -149,16 +149,16 @@ editor.setDrawingMode("normal");
 # UI delivery events.
 - Most events that are passed to the UI are replaced by Promise, which conveys the completion of execution. The undo / redo related events pass events to the UI as they are for state value management.
 
-Name | Purpose
------- | --------
-addText | when mousedown event occurs in 'TEXT' drawing mode
-objectActivated | when user selects an object
-objectMoved | when user drags an object
-objectScaled | when object is being scaled
-textEditing | when textbox is being edited
-mousedown | just mousedown
-undoStackChanged | undo change event
-redoStackChanged | redo change event
+| Name             | Purpose                                            |
+| ---------------- | -------------------------------------------------- |
+| addText          | when mousedown event occurs in 'TEXT' drawing mode |
+| objectActivated  | when user selects an object                        |
+| objectMoved      | when user drags an object                          |
+| objectScaled     | when object is being scaled                        |
+| textEditing      | when textbox is being edited                       |
+| mousedown        | just mousedown                                     |
+| undoStackChanged | undo change event                                  |
+| redoStackChanged | redo change event                                  |
 
 ### Example
 ```js

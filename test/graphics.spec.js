@@ -2,11 +2,11 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Tests command with command-factory
  */
-import snippet from 'tui-code-snippet';
-import {fabric} from 'fabric';
+import { fabric } from 'fabric';
 import $ from 'jquery';
 import { Graphics } from '../src/js/graphics';
 import { drawingModes, componentNames } from '../src/js/consts';
+import { stamp } from '../src/js/util';
 
 describe('Graphics', () => {
     const cssMaxWidth = 900;
@@ -92,7 +92,7 @@ describe('Graphics', () => {
         });
 
         graphics.add(triangle);
-        const objectId = snippet.stamp(triangle);
+        const objectId = stamp(triangle);
         graphics.removeObjectById(objectId);
         expect(graphics.getObjects().length).toBe(0);
     });

@@ -1,4 +1,3 @@
-import snippet from 'tui-code-snippet';
 import { Submenu } from './submenuBase';
 import templateHtml from './template/submenu/flip';
 
@@ -51,7 +50,7 @@ export class Flip extends Submenu {
                 this.flipStatus = false;
 
                 flipClassList.remove('resetFlip');
-                snippet.forEach(['flipX', 'flipY'], type => {
+                ['flipX', 'flipY'].map((type) => {
                     flipClassList.remove(type);
                     if (flipStatus[type]) {
                         flipClassList.add(type);

@@ -2,7 +2,7 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Image rotation module
  */
-import {fabric} from 'fabric';
+import { fabric } from 'fabric';
 import { Component } from '../interface/component';
 import { componentNames } from '../consts';
 
@@ -43,7 +43,7 @@ export class Rotation extends Component {
 
         const canvasImage = this.getCanvasImage();
         const oldImageCenter = canvasImage.getCenterPoint();
-        canvasImage.setAngle(angle).setCoords();
+        canvasImage.set({ angle }).setCoords();
         this.adjustCanvasDimension();
         const newImageCenter = canvasImage.getCenterPoint();
         this._rotateForEachObject(oldImageCenter, newImageCenter, angle - oldAngle);

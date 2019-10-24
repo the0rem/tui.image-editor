@@ -2,8 +2,7 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  * @fileoverview Graphics module
  */
-import snippet from 'tui-code-snippet';
-import {fabric} from 'fabric';
+import { fabric } from 'fabric';
 import { ImageLoader } from './component/imageLoader';
 import { Cropper } from './component/cropper';
 import { Flip } from './component/flip';
@@ -21,8 +20,9 @@ import { ShapeDrawingMode } from './drawingMode/shape';
 import { TextDrawingMode } from './drawingMode/text';
 import { componentNames, eventNames, drawingModes, fObjectOptions } from './consts';
 import * as util from './util';
-
-const {extend, stamp, isArray, isString, forEachArray, forEachOwnProperties, CustomEvents} = snippet;
+import forOwn from 'lodash/forOwn';
+import isString from 'lodash/isString';
+import { CustomEvents } from './custom-events';
 
 const DEFAULT_CSS_MAX_WIDTH = 1000;
 const DEFAULT_CSS_MAX_HEIGHT = 800;
@@ -146,6 +146,7 @@ export class Graphics {
             onSelectionCreated: this._onSelectionCreated.bind(this)
         };
 
+        this._setObjectCachingToFalse();
         this._setCanvasElement(element);
         this._createDrawingModeInstances();
         this._createComponents();
@@ -168,7 +169,7 @@ export class Graphics {
      * @returns {Graphics} this
      */
     deactivateAll() {
-        this._canvas.deactivateAll();
+        this._canvas.discardActiveObject();
 
         return this;
     }
@@ -189,7 +190,7 @@ export class Graphics {
      */
     add(objects) {
         let theArgs = [];
-        if (isArray(objects)) {
+        if (Array.isArray(objects)) {
             theArgs = objects;
         } else {
             theArgs.push(objects);
@@ -261,14 +262,14 @@ export class Graphics {
         const isValidGroup = target && target.isType('group') && !target.isEmpty();
 
         if (isValidGroup) {
-            canvas.discardActiveGroup(); // restore states for each objects
+            canvas.discardActiveObject(); // restore states for each objects
             target.forEachObject(obj => {
                 objects.push(obj);
-                obj.remove();
+                canvas.remove(obj);
             });
         } else if (canvas.contains(target)) {
             objects.push(target);
-            target.remove();
+            canvas.remove(target);
         }
 
         return objects;
@@ -297,15 +298,16 @@ export class Graphics {
      * @returns {Object} active object or group instance
      */
     getActiveObject() {
-        return this._canvas.getActiveObject();
+        return this._canvas._activeObject;
     }
 
     /**
      * Gets an active group object
      * @returns {Object} active group object instance
      */
-    getActiveGroupObject() {
-        return this._canvas.getActiveGroup();
+    getActiveObjects() {
+        const activeObject = this._canvas._activeObject;
+        return activeObject && activeObject.type === 'activeSelection' ? activeObject : null;
     }
 
     /**
@@ -405,7 +407,7 @@ export class Graphics {
      */
     setCanvasImage(name, canvasImage) {
         if (canvasImage) {
-            stamp(canvasImage);
+            util.stamp(canvasImage);
         }
         this.imageName = name;
         this.canvasImage = canvasImage;
@@ -636,7 +638,7 @@ export class Graphics {
      * @param {Object} styles - Selection styles
      */
     setSelectionStyle(styles) {
-        extend(fObjectOptions.SELECTION_STYLE, styles);
+        Object.assign(fObjectOptions.SELECTION_STYLE, styles);
     }
 
     /**
@@ -654,7 +656,7 @@ export class Graphics {
      */
     setObjectProperties(id, props) {
         const object = this.getObject(id);
-        const clone = extend({}, props);
+        const clone = Object.assign({}, props);
 
         object.set(clone);
 
@@ -677,12 +679,12 @@ export class Graphics {
 
         if (isString(keys)) {
             props[keys] = object[keys];
-        } else if (isArray(keys)) {
-            forEachArray(keys, value => {
+        } else if (Array.isArray(keys)) {
+            keys.map((value) => {
                 props[value] = object[value];
             });
         } else {
-            forEachOwnProperties(keys, (value, key) => {
+            forOwn(keys, (_value, key) => {
                 props[key] = object[key];
             });
         }
@@ -759,6 +761,15 @@ export class Graphics {
      */
     _getDrawingModeInstance(modeName) {
         return this._drawingModeMap[modeName];
+    }
+
+    /**
+     * Set object caching to false. This brought many bugs when draw Shape & cropzone
+     * @see http://fabricjs.com/fabric-object-caching
+     * @private
+     */
+    _setObjectCachingToFalse() {
+        fabric.Object.prototype.objectCaching = false;
     }
 
     /**
@@ -874,7 +885,7 @@ export class Graphics {
     _callbackAfterLoadingImageObject(obj) {
         const centerPos = this.getCanvasImage().getCenterPoint();
 
-        obj.set(consts.fObjectOptions.SELECTION_STYLE);
+        obj.set(fObjectOptions.SELECTION_STYLE);
         obj.set({
             left: centerPos.x,
             top: centerPos.y,
@@ -899,7 +910,8 @@ export class Graphics {
             'object:selected': handler.onObjectSelected,
             'path:created': handler.onPathCreated,
             'selection:cleared': handler.onSelectionCleared,
-            'selection:created': handler.onSelectionCreated
+            'selection:created': handler.onSelectionCreated,
+            'selection:updated': handler.onObjectSelected
         });
     }
 
@@ -935,7 +947,7 @@ export class Graphics {
     _onObjectRemoved(fEvent) {
         const obj = fEvent.target;
 
-        this._removeFabricObject(stamp(obj));
+        this._removeFabricObject(util.stamp(obj));
     }
 
     /**
@@ -980,7 +992,7 @@ export class Graphics {
      * @private
      */
     _onPathCreated(obj) {
-        obj.path.set(consts.fObjectOptions.SELECTION_STYLE);
+        obj.path.set(fObjectOptions.SELECTION_STYLE);
 
         const params = this.createObjectProperties(obj.path);
 
@@ -1008,7 +1020,6 @@ export class Graphics {
      * Canvas discard selection all
      */
     discardSelection() {
-        this._canvas.discardActiveGroup();
         this._canvas.discardActiveObject();
         this._canvas.renderAll();
     }
@@ -1041,14 +1052,14 @@ export class Graphics {
             'opacity'
         ];
         const props = {
-            id: stamp(obj),
+            id: util.stamp(obj),
             type: obj.type
         };
 
-        extend(props, util.getProperties(obj, predefinedKeys));
+        Object.assign(props, util.getProperties(obj, predefinedKeys));
 
         if (['i-text', 'text'].indexOf(obj.type) > -1) {
-            extend(props, this._createTextProperties(obj, props));
+            Object.assign(props, this._createTextProperties(obj, props));
         }
 
         return props;
@@ -1070,7 +1081,7 @@ export class Graphics {
             'textDecoration'
         ];
         const props = {};
-        extend(props, util.getProperties(obj, predefinedKeys));
+        Object.assign(props, util.getProperties(obj, predefinedKeys));
 
         return props;
     }
@@ -1081,7 +1092,7 @@ export class Graphics {
      * @returns {number} object id
      */
     _addFabricObject(obj) {
-        const id = stamp(obj);
+        const id = util.stamp(obj);
         this._objects[id] = obj;
 
         return id;
