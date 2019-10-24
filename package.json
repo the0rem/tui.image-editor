@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/nhnent/tui.image-editor.git"
   },
-  "main": "dist/tui-image-editor.js",
+  "main": "dist/bundle.js",
   "description": "TOAST UI Component: ImageEditor",
   "keywords": [
     "nhnent",
