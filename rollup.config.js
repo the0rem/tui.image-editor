@@ -24,12 +24,11 @@ export default {
         scss({
             output: 'dist/bundle.css',
         }),
-        // resolve(),
         resolve({
-            // module: true,
+            module: true,
             jsnext: true,
             main: true,
-            // browser: true,
+            browser: true,
         }),
         babel({
             babelrc: false,
@@ -50,10 +49,7 @@ export default {
         }),
         commonjs({
             include: /node_modules/,
-            exclude: [
-                // 'node_modules/cssstyle/**/*',
-            ],
-            // browser: true,
+            browser: true,
             preferBuiltins: false,
             ignoreGlobal: false,
         }),

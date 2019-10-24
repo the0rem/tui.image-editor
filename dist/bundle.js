@@ -1,14 +1,10 @@
 
 (function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.head.appendChild(r) })(window.document);
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('jsdom'), require('jsdom/lib/jsdom/living/generated/utils'), require('jsdom/lib/jsdom/utils')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'jsdom', 'jsdom/lib/jsdom/living/generated/utils', 'jsdom/lib/jsdom/utils'], factory) :
-	(global = global || self, factory(global.tui = {}, global.jsdom, global.utils, global.utils$1));
-}(this, function (exports, jsdom, utils, utils$1) { 'use strict';
-
-	jsdom = jsdom && jsdom.hasOwnProperty('default') ? jsdom['default'] : jsdom;
-	utils = utils && utils.hasOwnProperty('default') ? utils['default'] : utils;
-	utils$1 = utils$1 && utils$1.hasOwnProperty('default') ? utils$1['default'] : utils$1;
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(global = global || self, factory(global.tui = {}));
+}(this, function (exports) { 'use strict';
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -18,6 +14,10 @@
 
 	function createCommonjsModule(fn, module) {
 		return module = { exports: {} }, fn(module, module.exports), module.exports;
+	}
+
+	function getCjsExportFromNamespace (n) {
+		return n && n['default'] || n;
 	}
 
 	var check = function (it) {
@@ -17066,6 +17066,15 @@
 	  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isFastBuffer(obj.slice(0, 0))
 	}
 
+	var _nodeResolve_empty = {};
+
+	var _nodeResolve_empty$1 = /*#__PURE__*/Object.freeze({
+		__proto__: null,
+		'default': _nodeResolve_empty
+	});
+
+	var require$$2 = getCjsExportFromNamespace(_nodeResolve_empty$1);
+
 	var fabric_1 = createCommonjsModule(function (module, exports) {
 	/* build: `node build.js modules=ALL exclude=gestures,accessors requirejs minifier=uglifyjs` */
 	/*! Fabric.js Copyright 2008-2015, Printio (Juriy Zaytsev, Maxim Chernyak) */
@@ -17086,8 +17095,8 @@
 	}
 	else {
 	  // assume we're running under node.js when document/window are not present
-	  var jsdom$1 = jsdom;
-	  var virtualWindow = new jsdom$1.JSDOM(
+	  var jsdom = require$$2;
+	  var virtualWindow = new jsdom.JSDOM(
 	    decodeURIComponent('%3C!DOCTYPE%20html%3E%3Chtml%3E%3Chead%3E%3C%2Fhead%3E%3Cbody%3E%3C%2Fbody%3E%3C%2Fhtml%3E'),
 	    {
 	      features: {
@@ -17096,8 +17105,8 @@
 	      resources: 'usable'
 	    }).window;
 	  fabric.document = virtualWindow.document;
-	  fabric.jsdomImplForWrapper = utils.implForWrapper;
-	  fabric.nodeCanvas = utils$1.Canvas;
+	  fabric.jsdomImplForWrapper = require$$2.implForWrapper;
+	  fabric.nodeCanvas = require$$2.Canvas;
 	  fabric.window = virtualWindow;
 	  DOMParser = fabric.window.DOMParser;
 	}
